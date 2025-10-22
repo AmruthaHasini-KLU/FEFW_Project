@@ -1,0 +1,147 @@
+.App {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* =============================
+  DASHBOARDS - COMMON LAYOUT
+  ============================= */
+.dashboard { padding: 1.25rem; }
+.dashboard .dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat( auto-fit, minmax(240px, 1fr) );
+  gap: 1rem;
+}
+.dashboard .stats-grid {
+  display: grid;
+  grid-template-columns: repeat( auto-fit, minmax(220px, 1fr) );
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.dashboard .card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 1rem;
+}
+.dashboard .card .stat { font-size: 1.5rem; font-weight: 700; margin-top: .5rem; }
+.dashboard header { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1rem; padding: 0.75rem 1rem; border-radius: 12px; }
+.dashboard header h2 { margin: 0 0 0.25rem; }
+.dashboard header p { margin: 0; opacity: 0.9; }
+
+/* Layout columns: sidebar + content */
+.dashboard .dashboard-layout { display: grid; grid-template-columns: 240px 1fr; gap: 1rem; }
+.dashboard .dashboard-sidebar { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 1rem; }
+.dashboard .dashboard-sidebar nav { display: grid; gap: .5rem; margin-top: .5rem; }
+.dashboard .dashboard-content { min-width: 0; }
+
+/* Header utilities */
+.header .role-badge { background: rgba(255,255,255,0.12); padding: .25rem .5rem; border-radius: 6px; margin-right: .5rem; }
+.header .quick-search { padding: .5rem .75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.25); color: inherit; }
+
+/* Table styles */
+.table-block { margin-top: 1rem; }
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { text-align: left; padding: .6rem .5rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.table thead th { font-weight: 600; color: #cfd8e3; }
+
+/* Progress / Wizard */
+.progress { margin-top: .75rem; display: grid; gap: .4rem; }
+.progress-bar { height: 8px; border-radius: 999px; background: linear-gradient(90deg, #3b82f6, #22c55e); }
+.wizard { list-style: none; padding: 0; margin: .5rem 0 0; display:flex; gap: .75rem; flex-wrap: wrap; }
+.wizard li { padding: .35rem .6rem; border-radius: 999px; background: rgba(255,255,255,0.06); }
+.wizard li.active { background: linear-gradient(90deg, #2563eb, #22c55e); color: white; }
+
+/* Chart placeholder */
+.chart-placeholder { height: 200px; border-radius: 12px; border: 1px dashed rgba(255,255,255,0.2); display: grid; place-items: center; margin: 1rem 0; color: #9aa4b2; }
+
+/* =============================
+  LENDER DASHBOARD STYLES
+  ============================= */
+.lender-dashboard .lender-sidebar { background: rgba(20,35,60,0.35); }
+.lender-dashboard .lender-header { background: linear-gradient(90deg, #0b2a3b, #0d3f5a); }
+.lender-dashboard .lender-card { border-color: rgba(82, 172, 255, 0.2); }
+.lender-dashboard .lender-actions .btn-primary { background: linear-gradient(90deg, #1d4ed8, #22c55e); }
+.lender-dashboard .lender-chart { border-color: rgba(82, 172, 255, 0.3); }
+
+/* =============================
+  ADMIN DASHBOARD STYLES
+  ============================= */
+.admin-dashboard .admin-sidebar { background: rgba(40,40,40,0.35); }
+.admin-dashboard .admin-header { background: linear-gradient(90deg, #262626, #334155); }
+.admin-dashboard .admin-card { border-color: rgba(255, 82, 82, 0.25); }
+.admin-dashboard .admin-actions .btn-primary { background: linear-gradient(90deg, #16a34a, #22c55e); }
+
+/* =============================
+  BORROWER DASHBOARD STYLES
+  ============================= */
+.borrower-dashboard .borrower-sidebar { background: rgba(46, 28, 10, 0.35); }
+.borrower-dashboard .borrower-header { background: linear-gradient(90deg, #1b3a33, #276e64); }
+.borrower-dashboard .borrower-card { border-color: rgba(52, 211, 153, 0.35); }
+.borrower-dashboard .borrower-actions .btn-primary { background: linear-gradient(90deg, #10b981, #34d399); }
+
+/* =============================
+  ANALYST DASHBOARD STYLES
+  ============================= */
+.analyst-dashboard .analyst-sidebar { background: rgba(31, 21, 46, 0.35); }
+.analyst-dashboard .analyst-header { background: linear-gradient(90deg, #3a1856, #233b56); }
+.analyst-dashboard .analyst-card { border-color: rgba(197, 92, 255, 0.25); }
+.analyst-dashboard .analyst-actions .btn-primary { background: linear-gradient(90deg, #8b5cf6, #22d3ee); }
+
+/* Responsive tweak for small screens */
+@media (max-width: 720px) {
+  .dashboard header { flex-direction: column; align-items: stretch; }
+  .dashboard .dashboard-layout { grid-template-columns: 1fr; }
+  .dashboard .filters { flex-wrap: wrap; }
+}
+
+/* Filters bar */
+.filters { display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1rem; }
+.filters select { padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.25); color: inherit; }
+
+/* Table header actions */
+.table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
