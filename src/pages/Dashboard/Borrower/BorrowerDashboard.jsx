@@ -48,9 +48,9 @@ export default function BorrowerDashboard() {
     const max = Math.max(...data);
     const range = max - min || 1;
     const step = width / (data.length - 1);
-    const points = data.map((d, i) => `${i * step},${height - ((d - min) / range) * height}`).join(' ');
+    const points = data.map((d, i) => `₹{i * step},₹{height - ((d - min) / range) * height}`).join(' ');
     return (
-      <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" className="sparkline">
+      <svg width={width} height={height} viewBox={`0 0 ₹{width} ${height}`} preserveAspectRatio="none" className="sparkline">
         <polyline points={points} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     );

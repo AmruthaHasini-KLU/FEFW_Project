@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 
 const STORAGE_KEY = 'fynvia_dashboard_settings_v1';
 
@@ -77,7 +76,4 @@ export default function DashboardSettings({ onSave, children }) {
   );
 }
 
-DashboardSettings.propTypes = {
-  onSave: PropTypes.func,
-  children: PropTypes.node,
-};
+// PropTypes removed to avoid an external dependency in this lightweight component.

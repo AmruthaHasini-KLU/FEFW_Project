@@ -40,7 +40,7 @@ export default function AdminDashboard() {
       alert('Please provide name and email');
       return;
     }
-    const id = `U-${Date.now()}`; // unique-ish id
+    const id = `U-₹{Date.now()}`; // unique-ish id
     const joinDate = new Date().toISOString().split('T')[0];
     const newUser = { id, name: form.name.trim(), email: form.email.trim(), role: form.role, status: form.status, joinDate };
     setUsers(prev => [...prev, newUser]);
@@ -107,7 +107,7 @@ export default function AdminDashboard() {
                   <td>{u.name}</td>
                   <td>{u.email}</td>
                   <td><span className="status-badge">{u.role}</span></td>
-                  <td><span className={`status-badge ${u.status === 'active' ? 'approved' : 'pending'}`}>{u.status}</span></td>
+                  <td><span className={`status-badge ₹{u.status === 'active' ? 'approved' : 'pending'}`}>{u.status}</span></td>
                   <td>{u.joinDate}</td>
                   <td>
                     <button onClick={() => deleteUser(u.id)} className="btn btn-outline btn-sm">Remove</button>
