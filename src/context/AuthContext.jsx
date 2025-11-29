@@ -12,14 +12,16 @@ export function AuthProvider({ children }) {
     setReady(true);
   }, []);
 
-  const login = (creds) => {
-    const u = loginUser(creds);
+  const login = async (creds) => {
+    const u = await loginUser(creds);
     setUser({ id: u.id, name: u.name, email: u.email, role: u.role });
+    return u;
   };
 
-  const signup = (data) => {
-    const u = signupUser(data);
+  const signup = async (data) => {
+    const u = await signupUser(data);
     setUser({ id: u.id, name: u.name, email: u.email, role: u.role });
+    return u;
   };
 
   const updateUser = (updates) => {

@@ -1,33 +1,34 @@
 import React from 'react';
 import DashboardLayout from '@/components/DashboardLayout';
+import DashboardSettings from '@/components/DashboardSettings';
 
 export default function AnalystSettings() {
   return (
     <DashboardLayout role="analyst">
-      <div>
-      <div className="page-header"><h1>Analytics Settings</h1><p className="muted">Configure reporting parameters and data sources</p></div>
-      <div className="two-col" style={{ marginTop: '1rem' }}>
-        <div className="card" style={{ padding: '1.25rem' }}>
-          <h3>Report Configuration</h3>
-          <p className="muted">Customize your dashboard and reports</p>
-          <div style={{ marginTop: '1rem' }}>
-            <label className="muted">Default Time Period</label>
-            <select className="input-block"><option>Monthly</option></select>
-            <label className="muted" style={{ marginTop: '0.75rem' }}>Auto-refresh Interval</label>
-            <select className="input-block"><option>Hourly</option></select>
-            <button className="btn btn-dark" style={{ marginTop: '1rem' }}>Save Settings</button>
+      <div className="dashboard-content">
+        <div className="page-header"><h1>Analytics Settings</h1><p className="muted">Configure reporting parameters and data sources</p></div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 16 }}>
+          <div>
+            <DashboardSettings>
+              {/* no extra children here; DashboardSettings renders shared sections */}
+            </DashboardSettings>
           </div>
+          <aside className="card" style={{ padding: 16 }}>
+            <h3>Report Configuration</h3>
+            <p className="muted">Customize your dashboard and reports</p>
+            <div style={{ marginTop: 12 }}>
+              <label className="muted">Default Time Period</label>
+              <select className="input-block"><option>Monthly</option></select>
+              <label className="muted" style={{ marginTop: 8 }}>Auto-refresh Interval</label>
+              <select className="input-block"><option>Hourly</option></select>
+              <div style={{ marginTop: 12 }}>
+                <button className="btn btn-outline">Export as CSV</button>
+                <button className="btn btn-outline" style={{ marginLeft: 8 }}>Export as PDF</button>
+              </div>
+            </div>
+          </aside>
         </div>
-        <div className="card" style={{ padding: '1.25rem' }}>
-          <h3>Export Options</h3>
-          <p className="muted">Download reports in various formats</p>
-          <div style={{ marginTop: '1rem', display: 'grid', gap: '0.75rem' }}>
-            <button className="btn btn-outline">Export as CSV</button>
-            <button className="btn btn-outline">Export as PDF</button>
-            <button className="btn btn-outline">Export as Excel</button>
-          </div>
-        </div>
-      </div>
       </div>
     </DashboardLayout>
   );

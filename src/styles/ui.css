@@ -335,6 +335,14 @@ html { scroll-behavior: smooth; }
 .home-page h1 { font-size: 2.4rem; margin-bottom: 0.5rem; }
 .home-page p { color: var(--muted); margin-bottom: 1.25rem; }
 
+/* hero image and light-theme blue shade */
+.home-hero { width: 100%; max-width: 1100px; display: block; margin: 0 auto 1rem; border-radius: 12px; aspect-ratio: 16/9; object-fit: cover; }
+
+:root[data-theme="light"] .home-page { background: linear-gradient(180deg, rgba(99,102,241,0.035), rgba(14,165,233,0.02)); }
+
+/* active nav link style for scroll-based sections */
+.site-nav nav a.active { font-weight: 700; color: var(--accent-600); }
+
 /* Auth forms */
 .auth-wrapper { min-height: calc(100vh - 120px); display: grid; place-items: center; padding: 1.5rem 1rem; }
 .auth-page { width: 100%; max-width: 420px; margin: 0 auto; padding: 2rem; background: var(--glass); border-radius: 12px; }

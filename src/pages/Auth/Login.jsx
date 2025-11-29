@@ -28,10 +28,10 @@ export default function Login() {
     }
     try {
       setLoading(true);
-  login({ email, password });
-  // Decide path based on current user role in storage/context
-  const userRole = JSON.parse(localStorage.getItem('fynvia_current_user_v1'))?.role || 'borrower';
-  navigate(roleDashboardPath(userRole));
+      // await login so storage/context are updated before navigation
+      const u = await login({ email, password });
+      const userRole = (u && u.role) || JSON.parse(localStorage.getItem('fynvia_current_user_v1'))?.role || 'borrower';
+      navigate(roleDashboardPath(userRole));
     } catch (err) {
       setError('Invalid credentials.');
     } finally {

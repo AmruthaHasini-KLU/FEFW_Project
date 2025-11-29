@@ -30,6 +30,7 @@ import AnalystDashboard from '@/pages/Dashboard/Analyst/AnalystDashboard';
 import AnalystReports from '@/pages/Dashboard/Analyst/AnalystReports';
 import AnalystDataAnalysis from '@/pages/Dashboard/Analyst/AnalystDataAnalysis';
 import AnalystSettings from '@/pages/Dashboard/Analyst/AnalystSettings';
+import LoanCalculator from '@/pages/Dashboard/Shared/LoanCalculator';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -88,6 +89,14 @@ export default function AppRoutes() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/dashboard/lender/loan-calculator"
+              element={
+                <ProtectedRoute allowedRoles={['lender', 'admin', 'analyst', 'borrower']}>
+                  <LoanCalculator role="lender" />
+                </ProtectedRoute>
+              }
+            />
             <Route 
               path="/dashboard/borrower" 
               element={
@@ -109,6 +118,14 @@ export default function AppRoutes() {
               element={
                 <ProtectedRoute allowedRoles={['borrower']}>
                   <BorrowerPayments />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard/borrower/loan-calculator"
+              element={
+                <ProtectedRoute allowedRoles={['borrower', 'admin', 'lender', 'analyst']}>
+                  <LoanCalculator role="borrower" />
                 </ProtectedRoute>
               }
             />
@@ -176,6 +193,14 @@ export default function AppRoutes() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/dashboard/admin/loan-calculator"
+              element={
+                <ProtectedRoute allowedRoles={['admin', 'lender', 'analyst', 'borrower']}>
+                  <LoanCalculator role="admin" />
+                </ProtectedRoute>
+              }
+            />
             <Route 
               path="/dashboard/analyst" 
               element={
@@ -205,6 +230,14 @@ export default function AppRoutes() {
               element={
                 <ProtectedRoute allowedRoles={['analyst']}>
                   <AnalystSettings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard/analyst/loan-calculator"
+              element={
+                <ProtectedRoute allowedRoles={['analyst', 'admin', 'lender', 'borrower']}>
+                  <LoanCalculator role="analyst" />
                 </ProtectedRoute>
               }
             />

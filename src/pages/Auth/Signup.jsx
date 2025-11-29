@@ -52,9 +52,10 @@ export default function Signup() {
     }
     try {
       setLoading(true);
-  // Local signup persists to localStorage and sets current user
-      signup({ name: name.trim(), email, password, role, aadhar: aadhar || null, pan: pan || null });
-      navigate(roleDashboardPath(role));
+      // Await signup so storage/context are updated before navigation
+      const u = await signup({ name: name.trim(), email, password, role, aadhar: aadhar || null, pan: pan || null });
+      const userRole = (u && u.role) || role;
+      navigate(roleDashboardPath(userRole));
     } catch (err) {
       setError(err?.message || 'Failed to create account.');
     } finally {

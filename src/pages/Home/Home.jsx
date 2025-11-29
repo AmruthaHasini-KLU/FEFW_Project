@@ -1,8 +1,24 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import projectImage from '../../assets/project.png';
+import Features from '@/pages/Features/Features';
+import HowItWorks from '@/pages/HowItWorks/HowItWorks';
+import Support from '@/pages/Support/Support';
 
 export default function Home() {
+  const location = useLocation();
+
+  useEffect(() => {
+    // if navigated with a hash (e.g. /#features) scroll to it
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 80);
+    }
+  }, [location]);
+
   return (
     <div className="home-page">
       <img src={projectImage} alt="Project hero" className="home-hero" />
@@ -10,13 +26,10 @@ export default function Home() {
       <p>Your finance, simplified.</p>
       <Link to="/signup" className="cta">Get Started</Link>
 
-      <nav style={{ marginTop: 24, display: 'flex', gap: 12, justifyContent: 'center' }}>
-        <Link to="/features" style={{ color: 'var(--accent)', fontWeight: 600 }}>Features</Link>
-        <Link to="/how-it-works" style={{ color: 'var(--accent)', fontWeight: 600 }}>How it works</Link>
-        <Link to="/support" style={{ color: 'var(--accent)', fontWeight: 600 }}>Support</Link>
-      </nav>
-
-      {/* WhyChoose moved to HowItWorks page; anchors above allow scrolling when on Home */}
+      {/* Inline render the other pages' sections so Home can provide continuous scroll */}
+      <Features />
+      <HowItWorks />
+      <Support />
     </div>
   );
 }

@@ -1,24 +1,62 @@
-import React, { useMemo, useState } from 'react';
+// AdminUsers.jsx
+import React, { useMemo, useState, useEffect } from 'react';
 import DashboardSidebar from '@/components/DashboardSidebar';
 
 const sampleUsers = [
-  { id: 'U-1001', name: 'Alice Johnson', email: 'alice@demo.com', role: 'borrower', status: 'active', joined: '2024-01-10' },
-  { id: 'U-1002', name: 'Ben Rogers', email: 'ben@demo.com', role: 'lender', status: 'suspended', joined: '2024-01-15' },
-  { id: 'U-1003', name: 'Cara Miles', email: 'cara@demo.com', role: 'analyst', status: 'active', joined: '2024-02-01' },
-  { id: 'U-1004', name: 'David Park', email: 'david@demo.com', role: 'borrower', status: 'active', joined: '2024-02-20' },
+  { id: 'U-1001', name: 'Alice Johnson', email: 'alice@demo.com', role: 'Borrower', status: 'active', joinDate: '2024-01-10' },
+  { id: 'U-1002', name: 'Ben Rogers', email: 'ben@demo.com', role: 'Lender', status: 'suspended', joinDate: '2024-01-15' },
+  { id: 'U-1003', name: 'Cara Miles', email: 'cara@demo.com', role: 'Analyst', status: 'active', joinDate: '2024-02-01' },
+  { id: 'U-1004', name: 'David Park', email: 'david@demo.com', role: 'Borrower', status: 'active', joinDate: '2024-02-20' },
 ];
+
+import adminUsersService from '@/services/adminUsers';
 
 export default function AdminUsers() {
   const [query, setQuery] = useState('');
-  const [users, setUsers] = useState(sampleUsers);
+  const [users, setUsers] = useState([]);
 
-  const filtered = useMemo(() => users.filter(u => (
-    u.name.toLowerCase().includes(query.toLowerCase()) || u.email.toLowerCase().includes(query.toLowerCase()) || u.id.toLowerCase().includes(query.toLowerCase())
-  )), [users, query]);
+  // load from localStorage on mount (or initialize it)
+  useEffect(() => {
+    const loaded = adminUsersService.get();
+    if (loaded && loaded.length) setUsers(loaded);
+    else {
+      setUsers(sampleUsers);
+      adminUsersService.save(sampleUsers);
+    }
+    const unsub = adminUsersService.subscribe((next) => setUsers(Array.isArray(next) ? next : []));
+    return unsub;
+  }, []);
 
-  const suspend = (id) => setUsers(prev => prev.map(u => u.id === id ? { ...u, status: 'suspended' } : u));
-  const activate = (id) => setUsers(prev => prev.map(u => u.id === id ? { ...u, status: 'active' } : u));
-  const remove = (id) => setUsers(prev => prev.filter(u => u.id !== id));
+  // keep local storage in sync when users change here too
+  useEffect(() => {
+    // keep localStorage in sync whenever users changes (persist even when empty)
+    adminUsersService.save(users);
+  }, [users]);
+
+  const filtered = useMemo(() => users.filter(u =>
+    u.name.toLowerCase().includes(query.toLowerCase()) ||
+    u.email.toLowerCase().includes(query.toLowerCase()) ||
+    u.id.toLowerCase().includes(query.toLowerCase())
+  ), [users, query]);
+
+  const suspend = (id) => {
+    const updated = users.map(u => u.id === id ? { ...u, status: 'suspended' } : u);
+    setUsers(updated);
+    adminUsersService.save(updated);
+  };
+
+  const activate = (id) => {
+    const updated = users.map(u => u.id === id ? { ...u, status: 'active' } : u);
+    setUsers(updated);
+    adminUsersService.save(updated);
+  };
+
+  const remove = (id) => {
+    if (!confirm('Remove user?')) return;
+    const updated = users.filter(u => u.id !== id);
+    setUsers(updated);
+    adminUsersService.save(updated);
+  };
 
   return (
     <div className="admin-dashboard dashboard">
@@ -55,13 +93,16 @@ export default function AdminUsers() {
                     <td>{u.email}</td>
                     <td><span className="status-badge">{u.role}</span></td>
                     <td><span className={`status-badge ${u.status === 'active' ? 'approved' : 'pending'}`}>{u.status}</span></td>
-                    <td>{u.joined}</td>
+                    <td>{u.joinDate}</td>
                     <td>
                       {u.status !== 'active' ? <button className="btn btn-primary btn-sm" onClick={() => activate(u.id)}>Activate</button> : <button className="btn btn-outline btn-sm" onClick={() => suspend(u.id)}>Suspend</button>}
                       <button className="btn btn-outline btn-sm" style={{ marginLeft: 8 }} onClick={() => remove(u.id)}>Remove</button>
                     </td>
                   </tr>
                 ))}
+                {filtered.length === 0 && (
+                  <tr><td colSpan="7" style={{ textAlign: 'center', padding: '1rem' }}>No users found</td></tr>
+                )}
               </tbody>
             </table>
           </div>

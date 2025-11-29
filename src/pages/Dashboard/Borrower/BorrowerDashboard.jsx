@@ -78,12 +78,12 @@ export default function BorrowerDashboard() {
               <p className="muted">Track your loans and manage payments</p>
             </div>
             <div className="header-right">
-              <div className="lang">EN</div>
+              <div className="lang"></div>
               <div className="user-info">
-                <div className="user-name">{user?.name || 'Guest'}</div>
-                <div className="user-role">{user?.role}</div>
+                <div className="user-name"></div>
+                <div className="user-role"></div>
               </div>
-              <button className="btn btn-outline" onClick={() => logout()}>Logout</button>
+              <button className="btn btn-outline" onClick={() => logout()}></button>
             </div>
           </header>
 
@@ -213,7 +213,12 @@ export default function BorrowerDashboard() {
                   <div style={{ textAlign: 'center' }}><div style={{ fontSize: 22, color: 'var(--orange)' }}>Risk Flag</div><div className="muted">Low</div></div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <DoughnutChart labels={[ 'Paid', 'Due', 'Late' ]} values={[paymentsMade, totalPayments - paymentsMade, Math.max(0, 2)]} colors={[ 'var(--green)', 'var(--accent)', 'var(--orange)' ]} />
+                  <DoughnutChart labels={[ 'Paid', 'Due', 'Late' ]} values={[paymentsMade, totalPayments - paymentsMade, Math.max(0, 2)]} colors={[
+  '#ef4444', // bright red
+  '#3b82f6', // bright blue
+  '#f59e0b', // bright yellow
+  '#10b981', // bright green
+]} />
                 </div>
               </div>
             </div>
