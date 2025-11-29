@@ -22,9 +22,9 @@ export default function Home() {
   return (
     <div className="home-page">
       <img src={projectImage} alt="Project hero" className="home-hero" />
-      <h1>Welcome to Fynvia</h1>
-      <p>Your finance, simplified.</p>
-      <Link to="/signup" className="cta">Get Started</Link>
+      <h1 data-reveal>Welcome to Fynvia</h1>
+      <p data-reveal>Your finance, simplified.</p>
+      <Link to="/signup" className="cta" data-reveal>Get Started</Link>
 
       {/* Inline render the other pages' sections so Home can provide continuous scroll */}
       <Features />

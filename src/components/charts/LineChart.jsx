@@ -13,7 +13,8 @@ import { Line } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-export default function LineChart({ labels = [], data = [], label = 'Series', color = 'rgba(99,102,241,0.9)' }) {
+export default function LineChart({ labels = [], data = [], label = 'Series', color = 'rgba(99,102,241,0.9)', loading = false }) {
+  if (loading) return <div className="skeleton skeleton-chart" aria-busy="true" />;
   const chartData = {
     labels,
     datasets: [

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const features = [
   {
@@ -62,13 +63,19 @@ export default function WhyChoose() {
 
         <div className="cards">
           {features.map((f) => (
-            <div key={f.id} className="card">
+            <Link key={f.id} to="/features" className="card card-link" aria-label={`${f.title} — Learn more`}>
               <div className="icon" style={{ backgroundColor: `var(${f.colorVar})` }} aria-hidden>
                 {f.icon}
               </div>
-              <h3 className="card-title">{f.title}</h3>
-              <p className="card-desc">{f.desc}</p>
-            </div>
+              <div className="card-body">
+                <h3 className="card-title">{f.title}</h3>
+                <p className="card-desc">{f.desc}</p>
+              </div>
+              <div className="card-cta" aria-hidden>
+                <span>Learn more</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
+            </Link>
           ))}
         </div>
       </div>

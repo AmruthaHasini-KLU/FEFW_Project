@@ -8,39 +8,40 @@ export default function Support() {
         <p style={{ color: 'var(--muted)', marginBottom: 32 }}>
           Need help? Find answers, contact us, or connect with our team below.
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: '2.5rem', background: 'var(--panel)', borderRadius: 16, padding: '2.5rem 2rem', boxShadow: '0 2px 16px rgba(0,0,0,0.04)' }}>
+        <div className="support-grid">
           <div>
-            <h2 style={{ color: 'var(--accent)', fontWeight: 700, fontSize: '1.5rem', marginBottom: 8 }}>Fynvia</h2>
-            <p style={{ color: 'var(--muted)' }}>
-              Making loans simple, transparent, and accessible for everyone.
-            </p>
+            <h2 className="support-brand">Fynvia</h2>
+            <p className="support-muted">Making loans simple, transparent, and accessible for everyone.</p>
           </div>
           <div>
-            <h3 style={{ fontWeight: 700, marginBottom: 8 }}>Company</h3>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, color: 'var(--text)' }}>
-              <li>About Us</li>
-              <li>Careers</li>
-              <li>Contact</li>
-              <li>Blog</li>
+            <h3 className="support-heading">Company</h3>
+            <ul className="support-links">
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Blog</a></li>
             </ul>
           </div>
           <div>
-            <h3 style={{ fontWeight: 700, marginBottom: 8 }}>Support</h3>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, color: 'var(--text)' }}>
-              <li>Help Center</li>
-              <li>FAQs</li>
-              <li>Terms of Service</li>
-              <li>Privacy Policy</li>
+            <h3 className="support-heading">Support</h3>
+            <ul className="support-links">
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">FAQs</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Privacy Policy</a></li>
             </ul>
           </div>
           <div>
-            <h3 style={{ fontWeight: 700, marginBottom: 8 }}>Connect</h3>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, color: 'var(--text)' }}>
-              <li>LinkedIn</li>
-              <li>Twitter</li>
-              <li>Facebook</li>
-              <li>support@fynvia.com</li>
+            <h3 className="support-heading">Connect</h3>
+            <ul className="support-links">
+              <li><a href="#">LinkedIn</a></li>
+              <li><a href="#">Twitter</a></li>
+              <li><a href="#">Facebook</a></li>
+              <li><a href="mailto:support@fynvia.com">support@fynvia.com</a></li>
             </ul>
+            <div style={{ marginTop: 12 }}>
+              <a className="btn btn-primary" href="mailto:support@fynvia.com?subject=Support%20Request">Contact Support</a>
+            </div>
           </div>
         </div>
       </main>

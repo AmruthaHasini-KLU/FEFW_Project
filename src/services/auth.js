@@ -38,39 +38,70 @@ export async function signupUser({
   aadhar = null,
   pan = null,
 }) {
-  const res = await fetch(`${API_URL}/signup`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, email, password, role, aadhar, pan }),
-  });
+  // Try backend signup first; if network/backend unavailable, fall back to localStorage-based signup
+  try {
+    const res = await fetch(`${API_URL}/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password, role, aadhar, pan }),
+    });
 
-  const data = await res.json();
-  if (!res.ok) {
-    const err = new Error(data.error || "Signup failed");
-    if (res.status === 409) err.code = "EMAIL_EXISTS";
-    throw err;
+    const data = await res.json();
+    if (!res.ok) {
+      const err = new Error(data.error || "Signup failed");
+      if (res.status === 409) err.code = "EMAIL_EXISTS";
+      throw err;
+    }
+
+    setCurrentUser(data);
+    return data;
+  } catch (err) {
+    // Network or backend error: fallback to local storage auth for prototyping
+    // Check for existing email
+    const users = loadUsers();
+    if (users.find((u) => u.email.toLowerCase() === String(email).toLowerCase())) {
+      const e = new Error('Email already exists (local)');
+      e.code = 'EMAIL_EXISTS';
+      throw e;
+    }
+    const id = `local_${Date.now()}_${Math.floor(Math.random() * 9000 + 1000)}`;
+    const user = { id, name, email, password, role, aadhar, pan, createdAt: Date.now() };
+    users.push(user);
+    saveUsers(users);
+    setCurrentUser(user);
+    return user;
   }
-
-  setCurrentUser(data);
-  return data;
 }
 
 export async function loginUser({ email, password }) {
-  const res = await fetch(`${API_URL}/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
+  try {
+    const res = await fetch(`${API_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-  const data = await res.json();
-  if (!res.ok) {
-    const err = new Error(data.error || "Invalid credentials");
-    err.code = "INVALID_CREDENTIALS";
-    throw err;
+    const data = await res.json();
+    if (!res.ok) {
+      const err = new Error(data.error || "Invalid credentials");
+      err.code = "INVALID_CREDENTIALS";
+      throw err;
+    }
+
+    setCurrentUser(data);
+    return data;
+  } catch (err) {
+    // Fallback to local users for prototyping when backend is unavailable
+    const users = loadUsers();
+    const user = users.find((u) => u.email.toLowerCase() === String(email).toLowerCase());
+    if (!user || user.password !== password) {
+      const e = new Error('Invalid credentials (local)');
+      e.code = 'INVALID_CREDENTIALS';
+      throw e;
+    }
+    setCurrentUser(user);
+    return user;
   }
-
-  setCurrentUser(data);
-  return data;
 }
 
 // ---------------- Rest (password reset, etc.) stay local ----------------

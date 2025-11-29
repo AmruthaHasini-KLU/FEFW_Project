@@ -5,6 +5,7 @@ import './styles/ui.css'
 import AppRoutes from './routes/AppRoutes'
 import { AuthProvider } from './context/AuthContext'
 import { SettingsProvider } from './context/SettingsContext'
+// scrollReveal is loaded dynamically below after initial paint
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -15,3 +16,10 @@ createRoot(document.getElementById('root')).render(
     </AuthProvider>
   </StrictMode>,
 )
+
+// initialize scroll reveal after initial paint
+if (typeof window !== 'undefined') {
+  window.requestAnimationFrame(() => {
+    import('./utils/scrollReveal').then(({ default: init }) => init({ once: true }));
+  });
+}

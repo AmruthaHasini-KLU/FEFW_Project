@@ -218,6 +218,88 @@ html { scroll-behavior: smooth; }
 
 /* Cards and tables inside dashboard content should use available width */
 .dashboard-content .card, .borrower-content .card, .lender-content .card, .analyst-content .card { width: 100%; box-sizing: border-box; }
+
+/* ---------------- Animations & micro-interactions ---------------- */
+/* reveal animation: used by scrollReveal utility (adds .in-view) */
+.reveal { opacity: 0; transform: translateY(12px) scale(0.995); transition: opacity 520ms cubic-bezier(.2,.9,.2,1), transform 520ms cubic-bezier(.2,.9,.2,1); will-change: opacity, transform; }
+.reveal.in-view { opacity: 1; transform: translateY(0) scale(1); }
+
+/* subtle hero headline entrance */
+.hero-left h1 { transform-origin: left center; transition: transform 480ms cubic-bezier(.2,.9,.2,1), opacity 420ms ease; }
+.hero-left.reveal.in-view h1 { transform: translateY(0) scale(1); opacity: 1; }
+
+/* card hover lift */
+.card { transition: transform 220ms ease, box-shadow 220ms ease; }
+.card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(2,6,23,0.08); }
+
+/* CTA microinteraction */
+.cta { transition: transform 160ms ease, box-shadow 160ms ease, opacity 120ms ease; box-shadow: 0 6px 18px rgba(16,24,40,0.06); }
+.cta:active { transform: translateY(1px) scale(0.996); }
+.cta:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(16,24,40,0.08); }
+
+/* nav link hover underline animation */
+.hero-nav a, .inner-nav a, .main-nav a { position: relative; }
+.hero-nav a::after, .inner-nav a::after, .main-nav a::after { content: ''; position: absolute; left: 0; right: auto; bottom: -6px; height: 2px; width: 0; background: var(--accent); transition: width 220ms ease; }
+.hero-nav a:hover::after, .inner-nav a:hover::after, .main-nav a:hover::after { width: 100%; }
+
+/* small floating accent for illustrative visuals */
+.hero-visual { animation: floatY 6s ease-in-out infinite; }
+@keyframes floatY { 0% { transform: translateY(0);} 50% { transform: translateY(-6px);} 100% { transform: translateY(0);} }
+
+/* sparkline subtle stroke animation (polyline) */
+.sparkline polyline { transition: stroke-dashoffset 600ms ease; }
+
+/* small fade for sidebar and panels */
+.sliding-panel, .dashboard .common-sidebar { transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 260ms ease; }
+
+/* focus-visible improvements for keyboard users */
+a:focus, button:focus, .cta:focus { outline: 3px solid rgba(99,102,241,0.12); outline-offset: 3px; }
+
+/* apply reveal by default to elements that should animate */
+[data-reveal] { opacity: 0; transform: translateY(12px); transition: all 520ms cubic-bezier(.2,.9,.2,1); }
+[data-reveal].in-view { opacity: 1; transform: translateY(0); }
+
+
+/* ---------------- Animations & micro-interactions ---------------- */
+/* reveal animation: used by scrollReveal utility (adds .in-view) */
+.reveal { opacity: 0; transform: translateY(12px) scale(0.995); transition: opacity 520ms cubic-bezier(.2,.9,.2,1), transform 520ms cubic-bezier(.2,.9,.2,1); will-change: opacity, transform; }
+.reveal.in-view { opacity: 1; transform: translateY(0) scale(1); }
+
+/* subtle hero headline entrance */
+.hero-left h1 { transform-origin: left center; transition: transform 480ms cubic-bezier(.2,.9,.2,1), opacity 420ms ease; }
+.hero-left.reveal.in-view h1 { transform: translateY(0) scale(1); opacity: 1; }
+
+/* card hover lift */
+.card { transition: transform 220ms ease, box-shadow 220ms ease; }
+.card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(2,6,23,0.08); }
+
+/* CTA microinteraction */
+.cta { transition: transform 160ms ease, box-shadow 160ms ease, opacity 120ms ease; box-shadow: 0 6px 18px rgba(16,24,40,0.06); }
+.cta:active { transform: translateY(1px) scale(0.996); }
+.cta:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(16,24,40,0.08); }
+
+/* nav link hover underline animation */
+.hero-nav a, .inner-nav a, .main-nav a { position: relative; }
+.hero-nav a::after, .inner-nav a::after, .main-nav a::after { content: ''; position: absolute; left: 0; right: auto; bottom: -6px; height: 2px; width: 0; background: var(--accent); transition: width 220ms ease; }
+.hero-nav a:hover::after, .inner-nav a:hover::after, .main-nav a:hover::after { width: 100%; }
+
+/* small floating accent for illustrative visuals */
+.hero-visual { animation: floatY 6s ease-in-out infinite; }
+@keyframes floatY { 0% { transform: translateY(0);} 50% { transform: translateY(-6px);} 100% { transform: translateY(0);} }
+
+/* sparkline subtle stroke animation (polyline) */
+.sparkline polyline { transition: stroke-dashoffset 600ms ease; }
+
+/* small fade for sidebar and panels */
+.sliding-panel, .dashboard .common-sidebar { transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 260ms ease; }
+
+/* focus-visible improvements for keyboard users */
+a:focus, button:focus, .cta:focus { outline: 3px solid rgba(99,102,241,0.12); outline-offset: 3px; }
+
+/* apply reveal by default to elements that should animate */
+[data-reveal] { opacity: 0; transform: translateY(12px); }
+[data-reveal].in-view { opacity: 1; transform: translateY(0); }
+
 .dashboard-content .table, .borrower-content .table { width: 100%; }
 
 /* Admin dashboard specific styles */
@@ -349,6 +431,35 @@ html { scroll-behavior: smooth; }
 .auth-page form { display:flex; flex-direction:column; gap:0.75rem; }
 .auth-page input, .auth-page select { padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text); }
 
+/* Ensure native select dropdowns match app theme and option text is readable */
+select, .auth-page select, .apply-form select {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--input-border);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Option styling (note: some browsers have limited support) */
+select option {
+  background: var(--panel);
+  color: var(--text);
+}
+
+/* Make the native dropdown arrow subtle and consistent */
+select.custom-arrow {
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 2.25rem;
+}
+
+/* Small fix for Windows/Edge dropdown expand icon */
+select::-ms-expand { display: none; }
+
+
 /* Auth tabs */
 .auth-tabs { display:flex; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 4px; gap: 4px; }
 .auth-tab { flex:1; text-align:center; padding: 0.5rem 0.75rem; color: var(--text); border-radius: 8px; font-weight: 600; background: transparent; }
@@ -360,6 +471,27 @@ html { scroll-behavior: smooth; }
 .link-btn:hover { text-decoration: underline; }
 .auth-card { margin-top: 1rem; }
 .auth-error { background: var(--error-bg); border: 1px solid var(--error-border); color: var(--error-text); padding: 0.5rem 0.75rem; border-radius: 8px; margin-bottom: .5rem; }
+
+/* Input with toggle (password show/hide) */
+.input-with-toggle { position: relative; }
+.input-with-toggle .input-toggle { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: none; background: transparent; color: var(--muted); padding: 6px 8px; cursor: pointer; font-weight:600; }
+.input-toggle:focus { outline: none; }
+
+.password-hint { margin-top: 8px; display:flex; gap:12px; align-items:center; justify-content:space-between; }
+.pw-rules { display:flex; gap:10px; }
+.pw-rules .ok { color: var(--green); font-size:0.9rem; }
+.pw-rules .bad { color: var(--muted); opacity:0.9; font-size:0.9rem; }
+.pw-strength { flex:1; display:flex; flex-direction:column; gap:6px; align-items:flex-end; }
+.pw-bar { width:120px; height:8px; border-radius:8px; background: rgba(0,0,0,0.06); }
+.pw-bar.weak { background: linear-gradient(90deg,#f97316,#f97316); }
+.pw-bar.medium { background: linear-gradient(90deg,#f59e0b,#f59e0b); }
+.pw-bar.strong { background: linear-gradient(90deg,#10b981,#10b981); }
+
+/* Loan type pills and EMI preview */
+.loan-type-pills { display:flex; gap:8px; margin-top:8px; }
+.pill { padding:8px 12px; border-radius:999px; border:1px solid var(--border); background:var(--panel); cursor:pointer; }
+.pill.active { background: linear-gradient(90deg,var(--accent),var(--accent-600)); color:white; border:none; box-shadow: var(--shadow); }
+.emi-preview { min-width:160px; }
 
 /* Dashboard layout: use a flex layout so sidebars and content behave consistently */
 .dashboard { display: flex; gap: 1.5rem; padding: 1.25rem; align-items: flex-start; }
@@ -426,5 +558,76 @@ html { scroll-behavior: smooth; }
 @media (max-width: 1000px) {
   .dashboard-layout.full-width .kpi-row { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ---------- Interaction polish and micro-interactions ---------- */
+/* Consistent easing and duration for hover/focus transitions */
+:root { --ux-ease: cubic-bezier(.22,.98,.35,1); --ux-duration: 180ms; }
+
+/* Feature cards (actionable) */
+.card-link { display:flex; align-items:flex-start; gap:12px; padding:1rem; text-decoration:none; color:var(--text); border-radius:12px; transition: transform var(--ux-duration) var(--ux-ease), box-shadow var(--ux-duration) var(--ux-ease); }
+.card-link .icon { border-radius:10px; width:56px; height:56px; display:flex; align-items:center; justify-content:center; color:#fff; transition: transform var(--ux-duration) var(--ux-ease), filter var(--ux-duration) var(--ux-ease); flex-shrink:0; }
+.card-link .card-body { flex:1; }
+.card-link .card-cta { display:flex; align-items:center; gap:8px; color:var(--muted); font-weight:700; font-size:0.9rem; opacity:0.95; }
+.card-link:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(2,6,23,0.08); }
+.card-link:hover .icon { transform: scale(1.06); filter: brightness(1.08) saturate(1.08); }
+.card-link:focus { outline: none; box-shadow: 0 0 0 4px rgba(100,108,255,0.12); }
+
+/* How it works steps */
+.how-steps { display:grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.how-step { background: var(--panel); border: 1px solid var(--border); padding: 1.25rem; border-radius: 12px; text-align:center; transition: transform var(--ux-duration) var(--ux-ease), box-shadow var(--ux-duration) var(--ux-ease), border-color var(--ux-duration) var(--ux-ease); cursor: pointer; }
+.how-step:focus { outline: none; box-shadow: 0 0 0 4px rgba(100,108,255,0.12); }
+.how-step:hover, .how-step:focus { transform: translateY(-6px); border-color: var(--accent-600); box-shadow: 0 18px 40px rgba(2,6,23,0.06); }
+.how-step-circle { width:76px; height:76px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:1.25rem; margin:0 auto 1rem auto; transition: transform var(--ux-duration) var(--ux-ease); }
+.how-step:hover .how-step-circle, .how-step:focus .how-step-circle { transform: scale(1.06); }
+.how-step-title { margin:0 0 8px; font-weight:700; }
+.how-step-desc { color:var(--muted); margin:0; }
+
+/* Start Application CTA */
+.btn-primary { transition: transform var(--ux-duration) var(--ux-ease), box-shadow var(--ux-duration) var(--ux-ease); }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 18px 36px rgba(99,102,241,0.12); }
+
+/* Testimonials */
+.testimonials { display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem; }
+.testimonial-card { background: var(--panel); border:1px solid var(--border); padding:1.5rem; border-radius:14px; transition: transform var(--ux-duration) var(--ux-ease), box-shadow var(--ux-duration) var(--ux-ease); }
+.testimonial-card .testimonial-stars { color:#FFD600; margin-bottom:8px; }
+.testimonial-card .testimonial-text { color:var(--text); margin-bottom:16px; }
+.testimonial-card .testimonial-avatar { width:44px; height:44px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; color:#fff; font-weight:700; margin-right:10px; transition: box-shadow var(--ux-duration) var(--ux-ease), transform var(--ux-duration) var(--ux-ease); }
+.testimonial-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(2,6,23,0.06); }
+.testimonial-card:hover .testimonial-avatar { box-shadow: 0 0 0 6px rgba(100,108,255,0.06); transform: translateY(-2px); }
+
+@media (max-width: 900px) {
+  .testimonials { grid-auto-flow: column; grid-auto-columns: 80%; overflow-x: auto; scroll-snap-type: x mandatory; gap: 1rem; padding-bottom: 8px; }
+  .testimonial-card { scroll-snap-align: start; }
+}
+
+/* Support area */
+.support-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 1.5rem; background: var(--panel); border-radius:16px; padding:2.25rem; border:1px solid var(--border); }
+.support-brand { color: var(--accent); font-weight:700; font-size:1.3rem; margin-bottom:8px; }
+.support-muted { color: var(--muted); }
+.support-heading { font-weight:700; margin-bottom:8px; }
+.support-links { list-style:none; padding:0; margin:0; }
+.support-links li { margin:6px 0; }
+.support-links a { color: var(--text); text-decoration:none; transition: color var(--ux-duration) var(--ux-ease), text-decoration var(--ux-duration) var(--ux-ease); }
+.support-links a:hover, .support-links a:focus { color: var(--accent-600); text-decoration: underline; }
+
+/* Focus rings for keyboard users */
+a:focus, button:focus { outline: none; box-shadow: 0 0 0 4px rgba(100,108,255,0.12); border-radius: 8px; }
+
+/* Skeletons */
+.skeleton { background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02), rgba(255,255,255,0.02)); border-radius: 8px; }
+.skeleton-chart { height: 180px; border-radius: 10px; background: linear-gradient(90deg, rgba(200,200,200,0.06), rgba(200,200,200,0.04)); }
+
+/* small utility to ensure focusable elements show a visible ring */
+.focus-ring { box-shadow: 0 0 0 4px rgba(100,108,255,0.12); }
+
+/* Custom select component styles */
+.custom-select { position: relative; width: 100%; }
+.custom-select-button { width: 100%; text-align: left; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border-radius:10px; border:1px solid var(--input-border); background:var(--surface); color:var(--text); cursor:pointer; }
+.custom-select-button:focus { outline:none; box-shadow: 0 0 0 4px rgba(100,108,255,0.12); }
+.custom-select-menu { position: absolute; left: 0; right: 0; margin-top:8px; background: var(--panel); border:1px solid var(--border); border-radius:10px; max-height:220px; overflow:auto; box-shadow: 0 20px 40px rgba(2,6,23,0.08); z-index: 60; padding:6px; }
+.custom-select-item { padding:10px 12px; border-radius:8px; cursor:pointer; color:var(--text); }
+.custom-select-item:hover, .custom-select-item.highlight { background: rgba(99,102,241,0.06); }
+.custom-select-caret { opacity:0.9; }
+
 
 

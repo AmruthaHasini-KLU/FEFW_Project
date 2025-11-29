@@ -4,7 +4,9 @@ import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function DoughnutChart({ labels = [], values = [], colors = [] }) {
+export default function DoughnutChart({ labels = [], values = [], colors = [], loading = false }) {
+  if (loading) return <div className="skeleton skeleton-chart" aria-busy="true" />;
+
   const data = {
     labels,
     datasets: [

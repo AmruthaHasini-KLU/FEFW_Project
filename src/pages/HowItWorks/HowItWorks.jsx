@@ -53,47 +53,52 @@ export default function HowItWorks() {
   return (
     <main id="how-it-works" className="how-page">
       <section className="intro">
-        <div className="container">
-          
-        </div>
+        <div className="container" />
       </section>
 
-  <div className="howitworks-page" style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)' }}>
+      <div className="howitworks-page" style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)' }}>
         <main style={{ maxWidth: 1200, margin: '0 auto', padding: '3rem 1rem 0 1rem' }}>
           <h1 style={{ fontSize: '2.5rem', fontWeight: 700, textAlign: 'center', marginBottom: 8 }}>How It Works</h1>
           <p style={{ color: 'var(--muted)', textAlign: 'center', fontSize: '1.25rem', marginBottom: 40 }}>
             Three simple steps to get your loan
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2.5rem', marginBottom: 64 }}>
+
+          <div className="how-steps" style={{ marginBottom: 32 }}>
             {steps.map((step) => (
-              <div key={step.num} style={{ textAlign: 'center' }}>
-                <div style={{ width: 80, height: 80, borderRadius: '50%', background: step.color, color: '#fff', fontWeight: 700, fontSize: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem auto' }}>{step.num}</div>
-                <h2 style={{ fontSize: '1.3rem', fontWeight: 600, marginBottom: 8 }}>{step.title}</h2>
-                <p style={{ color: 'var(--muted)', fontSize: '1.08rem' }}>{step.desc}</p>
+              <div key={step.num} className="how-step" tabIndex={0} aria-label={`${step.title} — step ${step.num}`}>
+                <div className="how-step-circle" style={{ background: step.color }}>{step.num}</div>
+                <h3 className="how-step-title">{step.title}</h3>
+                <p className="how-step-desc">{step.desc}</p>
               </div>
             ))}
           </div>
+
+          <div style={{ textAlign: 'center', marginBottom: 48 }}>
+            <a className="btn btn-primary" href="/dashboard/borrower/apply">Start Application</a>
+          </div>
+
           <h1 style={{ fontSize: '2.2rem', fontWeight: 700, textAlign: 'center', marginBottom: 8 }}>Trusted by Thousands</h1>
           <p style={{ color: 'var(--muted)', textAlign: 'center', fontSize: '1.15rem', marginBottom: 32 }}>
             See what our customers say about us
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem', marginBottom: 48 }}>
+
+          <div className="testimonials" style={{ marginBottom: 48 }}>
             {testimonials.map((t, i) => (
-              <div key={i} style={{ background: 'var(--panel)', border: '1px solid var(--border)', borderRadius: 18, padding: '2rem 1.5rem', minHeight: 220 }}>
-                <div style={{ marginBottom: 8 }}>
+              <article key={i} className="testimonial-card">
+                <div className="testimonial-stars">
                   {Array.from({ length: t.stars }).map((_, idx) => (
-                    <span key={idx} style={{ color: '#FFD600', fontSize: '1.3rem', marginRight: 2 }}>★</span>
+                    <span key={idx}>★</span>
                   ))}
                 </div>
-                <p style={{ color: 'var(--text)', fontSize: '1.08rem', marginBottom: 18 }}>{t.review}</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ width: 38, height: 38, borderRadius: '50%', background: t.color, color: '#fff', fontWeight: 700, fontSize: '1.1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{t.initials}</div>
+                <p className="testimonial-text">{t.review}</p>
+                <div className="testimonial-by">
+                  <div className="testimonial-avatar" style={{ background: t.color }}>{t.initials}</div>
                   <div>
-                    <div style={{ fontWeight: 700 }}>{t.name}</div>
-                    <div style={{ color: 'var(--muted)', fontSize: '0.98rem' }}>{t.role}</div>
+                    <div className="testimonial-name">{t.name}</div>
+                    <div className="testimonial-role">{t.role}</div>
                   </div>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         </main>
