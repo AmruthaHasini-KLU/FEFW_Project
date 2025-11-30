@@ -55,6 +55,7 @@ export default function Navbar() {
         <a href="/#features" onClick={(e) => scrollToSection('features', e)} className={activeSection === 'features' ? 'active' : ''}>Features</a>
         <a href="/#how-it-works" onClick={(e) => scrollToSection('how-it-works', e)} className={activeSection === 'how-it-works' ? 'active' : ''}>How It Works</a>
         {user && <Link to={roleDashboardPath(user.role)}>Dashboard</Link>}
+        {user && <Link to="/dashboard/profile">Profile</Link>}
         <a href="/#support" onClick={(e) => scrollToSection('support', e)} className={activeSection === 'support' ? 'active' : ''}>Support</a>
       </nav>
       <div className="actions">

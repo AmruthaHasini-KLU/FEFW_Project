@@ -7,6 +7,7 @@ export default function PasswordInput({ id, label, value, onChange, placeholder,
   const hasNumber = /[0-9]/.test(value);
   const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(value);
   const strength = hasLength && hasNumber && hasSymbol ? (value.length > 11 ? 'strong' : 'medium') : 'weak';
+  const isValid = hasLength && hasNumber && hasSymbol;
 
   return (
     <div className="form-field">
@@ -25,18 +26,20 @@ export default function PasswordInput({ id, label, value, onChange, placeholder,
 
       {showStrength && (
         <div className="password-hint">
-          <div className="pw-rules" aria-live="polite">
-            {value.length === 0 ? null : (
-              <>
-                {!hasLength && <div className="bad">At least 8 characters</div>}
-                {!hasNumber && <div className="bad">Contains a number</div>}
-                {!hasSymbol && <div className="bad">Contains a symbol</div>}
-              </>
-            )}
-          </div>
-          <div className="pw-strength">
-            <div className={`pw-bar ${strength}`}></div>
-          </div>
+          {/* Only show the rule list while password is not valid and user started typing */}
+          {value.length > 0 && !isValid && (
+            <div className="pw-rules" aria-live="polite">
+              {!hasLength && <div className="bad">At least 8 characters</div>}
+              {!hasNumber && <div className="bad">Contains a number</div>}
+              {!hasSymbol && <div className="bad">Contains a symbol</div>}
+            </div>
+          )}
+          {/* Only show the strength bar while the password is still missing criteria. */}
+          {!isValid && value.length > 0 && (
+            <div className="pw-strength">
+              <div className={`pw-bar ${strength}`}></div>
+            </div>
+          )}
         </div>
       )}
 

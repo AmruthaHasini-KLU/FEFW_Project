@@ -32,8 +32,20 @@ export default function Signup() {
     const errs = {};
     const nameTrim = String(name || '').trim();
     if (!/^[A-Za-z\s]+$/.test(nameTrim)) errs.name = 'Name must contain only letters and spaces.';
+    if ((nameTrim || '').length < 10) errs.name = 'Name must be at least 10 characters.';
     if (!password) errs.password = 'Password is required.';
+    // Password strength: min 8 chars, uppercase, lowercase, number
+    const pwd = String(password || '');
+    const pwdErrs = [];
+    if (pwd.length < 8) pwdErrs.push('at least 8 characters');
+    if (!/[a-z]/.test(pwd)) pwdErrs.push('a lowercase letter');
+    if (!/[A-Z]/.test(pwd)) pwdErrs.push('an uppercase letter');
+    if (!/\d/.test(pwd)) pwdErrs.push('a number');
+    if (pwdErrs.length) errs.password = `Password must contain ${pwdErrs.join(', ')}.`;
     if (password !== confirmPassword) errs.confirmPassword = 'Passwords do not match.';
+    // Email must include @ and end with .com or .in
+    const emailTrim = String(email || '').trim();
+    if (!/^[^\s@]+@[^\s@]+\.(com|in)$/i.test(emailTrim)) errs.email = 'Email must be valid and end with .com or .in.';
     if (aadhar) {
       if (!/^\d{12}$/.test(aadhar)) errs.aadhar = 'Aadhar must be 12 digits.';
     }
@@ -72,6 +84,13 @@ export default function Signup() {
     }
   };
 
+  // Live validation flags for inline criteria display
+  const nameTrim = String(name || '').trim();
+  const nameLettersOnly = /^[A-Za-z\s]+$/.test(nameTrim) && nameTrim.length > 0;
+  const nameMinLen = nameTrim.length >= 10;
+  // require '@' and top-level domain .com or .in
+  const emailValid = /^[^\s@]+@[^\s@]+\.(com|in)$/i.test(String(email || ''));
+
   return (
     <AuthLayout title="Create your account">
       {error && <div className="auth-error">{error}</div>}
@@ -82,6 +101,13 @@ export default function Signup() {
           onChange={(e) => setName(e.target.value)}
           error={fieldErrors.name}
         />
+        {/* name criteria: hide when satisfied */}
+        {nameTrim.length > 0 && !(nameLettersOnly && nameMinLen) && (
+          <div className="pw-rules" style={{ marginTop: -6, marginBottom: 8 }}>
+            <div className={nameLettersOnly ? 'good' : 'bad'}>Only letters and spaces</div>
+            <div className={nameMinLen ? 'good' : 'bad'}>At least 10 characters</div>
+          </div>
+        )}
         <Input
           placeholder="Email"
           type="email"
@@ -89,6 +115,11 @@ export default function Signup() {
           onChange={(e) => setEmail(e.target.value)}
           error={fieldErrors.email}
         />
+        {email.length > 0 && !emailValid && (
+          <div className="pw-rules" style={{ marginTop: -6, marginBottom: 8 }}>
+            <div className={'bad'}>Email must contain '@' and end with .com or .in</div>
+          </div>
+        )}
         <PasswordInput
           id="password"
           label="Password"

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboardLayout from '@/components/DashboardLayout';
+import { getCurrentUser } from '@/services/auth';
 
 function InlineLineChart({ data = [30, 45, 28, 60, 75, 62, 80], color = 'var(--accent)' }) {
   const w = 420;
@@ -27,44 +28,132 @@ function InlineLineChart({ data = [30, 45, 28, 60, 75, 62, 80], color = 'var(--a
 }
 
 export default function LenderOffers() {
+  const [offers, setOffers] = useState([]);
+  const [term, setTerm] = useState('12');
+  const [rate, setRate] = useState('10.5');
+  const [amount, setAmount] = useState('5000');
+  const [borrowers, setBorrowers] = useState([]);
+  const [applications, setApplications] = useState([]);
+
+  useEffect(() => {
+    const load = () => {
+      const o = JSON.parse(localStorage.getItem('fynvia_offers_v1') || '[]');
+      setOffers(o);
+      const users = JSON.parse(localStorage.getItem('fynvia_users_v1') || '[]');
+      setBorrowers(users.filter(u => u.role === 'borrower'));
+      // load applications for lender to review
+      const apps = JSON.parse(localStorage.getItem('fynvia_applications_v1') || '[]');
+      setApplications(apps);
+    };
+    load();
+  }, []);
+
+  const saveOffers = (next) => {
+    setOffers(next);
+    localStorage.setItem('fynvia_offers_v1', JSON.stringify(next));
+  };
+
+  const createOffer = () => {
+    const id = `OF-${Date.now()}`;
+    const newOffer = { id, term: `${term} months`, rate: `${rate}%`, amount: Number(amount), createdBy: getCurrentUser()?.id || 'lender', status: 'available', assignedTo: null, createdAt: Date.now() };
+    const next = [newOffer, ...offers];
+    saveOffers(next);
+    setAmount('');
+  };
+
+  const offerToBorrower = (offerId, borrowerId) => {
+    const next = offers.map(o => o.id === offerId ? { ...o, assignedTo: borrowerId, status: 'offered' } : o);
+    saveOffers(next);
+    alert('Offer sent to borrower');
+  };
+
+  const saveApplications = (next) => {
+    setApplications(next);
+    localStorage.setItem('fynvia_applications_v1', JSON.stringify(next));
+  };
+
+  const decideApplication = (appId, decision) => {
+    const userId = getCurrentUser()?.id || 'lender';
+    const next = applications.map(a => a.createdAt === appId ? { ...a, status: decision, decidedBy: userId, decidedAt: Date.now() } : a);
+    saveApplications(next);
+    // If approved, optionally mark offer as accepted
+    if (decision === 'approved') {
+      const app = applications.find(a => a.createdAt === appId);
+      if (app && app.offer && app.offer.id) {
+        const nextOffers = offers.map(o => o.id === app.offer.id ? { ...o, status: 'accepted' } : o);
+        saveOffers(nextOffers);
+      }
+    }
+  };
+
   return (
     <DashboardLayout role="lender">
       <div className="page-header">
-        <h1>Analytics & Reports</h1>
-        <p className="muted">Detailed insights into your lending performance</p>
+        <h1>Loan Offers</h1>
+        <p className="muted">Create and assign loan offers to borrowers</p>
       </div>
 
-      <div className="large-cards" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1rem' }}>
-        <div className="card" style={{ padding: '2rem', borderRadius: 12, border: '1px solid var(--border)' }}>
-          <h3>Monthly Revenue</h3>
-          <p className="muted">Interest income over time</p>
-          <div style={{ height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)' }}>
-            <InlineLineChart data={[120, 150, 110, 180, 220, 200, 260]} color="var(--accent)" />
+      <div className="large-cards" style={{ display: 'grid', gridTemplateColumns: '1fr 420px', gap: '1rem', marginTop: '1rem' }}>
+        <div className="card" style={{ padding: '1.25rem' }}>
+          <h3>Create Offer</h3>
+          <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+            <input value={term} onChange={(e) => setTerm(e.target.value)} placeholder="Term (months)" />
+            <input value={rate} onChange={(e) => setRate(e.target.value)} placeholder="Rate (%)" />
+            <input value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="Amount" />
+            <button className="btn btn-primary" onClick={createOffer}>Create</button>
+          </div>
+
+          <h3 style={{ marginTop: 18 }}>Existing Offers</h3>
+          <div style={{ marginTop: 8 }}>
+            {offers.length === 0 && <div style={{ color: 'var(--muted)' }}>No offers yet.</div>}
+            {offers.map((o) => (
+              <div key={o.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px dashed var(--border)' }}>
+                <div>
+                  <div style={{ fontWeight: 700 }}>{o.id} • {o.term} • {o.rate}</div>
+                  <div style={{ color: 'var(--muted)' }}>Amount: ₹{o.amount} • Status: {o.status}</div>
+                </div>
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                  <select onChange={(e) => offerToBorrower(o.id, e.target.value)} value={o.assignedTo || ''}>
+                    <option value="">Assign to borrower</option>
+                    {borrowers.map(b => <option key={b.id} value={b.id}>{b.name || b.email}</option>)}
+                  </select>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="card" style={{ padding: '2rem', borderRadius: 12, border: '1px solid var(--border)' }}>
-          <h3>Loan Performance</h3>
-          <p className="muted">Repayment rates and defaults</p>
-          <div style={{ height: 140, display: 'grid', placeItems: 'center', color: 'var(--muted)' }}>
-            <div style={{ fontSize: 32 }}>📊</div>
-            <div style={{ marginTop: 8 }}>Performance chart visualization would go here</div>
+        <div className="card" style={{ padding: '1.25rem' }}>
+          <h3>Recent Activity</h3>
+          <p className="muted">Offers created and their current status</p>
+          <div style={{ marginTop: 12 }}>
+            {offers.slice(0,6).map(o => (
+              <div key={o.id} style={{ padding: 8, borderRadius: 8, border: '1px solid var(--border)', marginBottom: 8 }}>
+                <div style={{ fontWeight: 700 }}>{o.id}</div>
+                <div style={{ color: 'var(--muted)' }}>{o.term} • {o.rate} • ₹{o.amount}</div>
+                <div style={{ color: 'var(--muted)', fontSize: '0.85rem' }}>Status: {o.status}{o.assignedTo ? ` • Assigned to ${o.assignedTo}` : ''}</div>
+              </div>
+            ))}
+            <h4 style={{ marginTop: 12 }}>Applications</h4>
+            {applications.length === 0 && <div style={{ color: 'var(--muted)', marginTop: 8 }}>No applications yet.</div>}
+            {applications.slice(0,6).map(app => (
+              <div key={app.createdAt} style={{ padding: 8, borderRadius: 8, border: '1px solid var(--border)', marginTop: 8 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <div style={{ fontWeight: 700 }}>{app.name} — {app.email}</div>
+                    <div style={{ color: 'var(--muted)' }}>Applied for: {app.offer?.term || app.offer || ''} • Amount: ₹{app.amount}</div>
+                    <div style={{ color: 'var(--muted)', fontSize: '0.85rem' }}>Status: {app.status || 'pending'}</div>
+                  </div>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <button className="btn btn-primary" onClick={() => decideApplication(app.createdAt, 'approved')}>Approve</button>
+                    <button className="btn btn-outline" onClick={() => decideApplication(app.createdAt, 'rejected')}>Reject</button>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
-
-      <section className="table-block" style={{ marginTop: '1.25rem' }}>
-        <div className="table-header"><h3>Offers</h3></div>
-        <table className="table">
-          <thead>
-            <tr><th>Offer ID</th><th>Term</th><th>Rate</th><th>Amount</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>OF-1001</td><td>12 months</td><td>10.5%</td><td>5,000</td></tr>
-            <tr><td>OF-1002</td><td>24 months</td><td>11.0%</td><td>12,000</td></tr>
-          </tbody>
-          </table>
-        </section>
-      </DashboardLayout>
+    </DashboardLayout>
   );
 }

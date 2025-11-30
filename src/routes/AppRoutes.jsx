@@ -31,6 +31,7 @@ import AnalystReports from '@/pages/Dashboard/Analyst/AnalystReports';
 import AnalystDataAnalysis from '@/pages/Dashboard/Analyst/AnalystDataAnalysis';
 import AnalystSettings from '@/pages/Dashboard/Analyst/AnalystSettings';
 import LoanCalculator from '@/pages/Dashboard/Shared/LoanCalculator';
+import Profile from '@/pages/Dashboard/Shared/Profile';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -126,6 +127,14 @@ export default function AppRoutes() {
               element={
                 <ProtectedRoute allowedRoles={['borrower', 'admin', 'lender', 'analyst']}>
                   <LoanCalculator role="borrower" />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard/profile"
+              element={
+                <ProtectedRoute allowedRoles={['admin','lender','borrower','analyst']}>
+                  <Profile />
                 </ProtectedRoute>
               }
             />

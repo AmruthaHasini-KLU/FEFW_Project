@@ -33,7 +33,7 @@ export default function Login() {
       const userRole = (u && u.role) || JSON.parse(localStorage.getItem('fynvia_current_user_v1'))?.role || 'borrower';
       navigate(roleDashboardPath(userRole));
     } catch (err) {
-      setError('Invalid credentials.');
+      setError(err?.message || 'Invalid credentials.');
     } finally {
       setLoading(false);
     }

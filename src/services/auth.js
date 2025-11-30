@@ -1,7 +1,21 @@
 const USERS_KEY = "fynvia_users_v1";
 const CURRENT_USER_KEY = "fynvia_current_user_v1";
 const RESETS_KEY = "fynvia_pw_resets_v1";
-const API_URL = "http://localhost:5000/api";
+export const API_URL = "http://localhost:5000/api";
+
+// ----------------- Helpers -----------------
+async function hashString(value) {
+  if (!value) return '';
+  if (typeof window === 'undefined' || !window.crypto || !window.crypto.subtle) {
+    // fallback simple hash (not cryptographically secure) if SubtleCrypto not available
+    let h = 0;
+    for (let i = 0; i < value.length; i++) h = (h << 5) - h + value.charCodeAt(i) | 0;
+    return String(h >>> 0);
+  }
+  const enc = new TextEncoder();
+  const data = await window.crypto.subtle.digest('SHA-256', enc.encode(value));
+  return Array.from(new Uint8Array(data)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
 // ---------------- Local helpers ----------------
 function loadUsers() {
@@ -57,7 +71,9 @@ export async function signupUser({ name, email, password, role, aadhar = null, p
       throw e;
     }
     const id = `local_${Date.now()}_${Math.floor(Math.random() * 9000 + 1000)}`;
-    const user = { id, name, email, password, role, aadhar, pan, createdAt: Date.now() };
+    // store hashed password for local fallback
+    const hashed = await hashString(password);
+    const user = { id, name, email, password: hashed, role, aadhar, pan, createdAt: Date.now() };
     users.push(user);
     saveUsers(users);
     setCurrentUser(user);
@@ -84,10 +100,20 @@ export async function loginUser({ email, password, role }) {
     return data.user;
   } catch (err) {
     const users = loadUsers();
-    const user = users.find(
-      (u) => u.email.toLowerCase() === String(email).toLowerCase() && u.role === role
-    );
-    if (!user || user.password !== password) {
+    const user = users.find((u) => {
+      const sameEmail = u.email.toLowerCase() === String(email).toLowerCase();
+      // If role is provided, require role match; otherwise match by email only
+      const roleMatches = typeof role === 'undefined' || role === null ? true : u.role === role;
+      return sameEmail && roleMatches;
+    });
+    if (!user) {
+      const e = new Error("Invalid credentials (local)");
+      e.code = "INVALID_CREDENTIALS";
+      throw e;
+    }
+    // support both plain-text (older entries) and hashed passwords
+    const hashedAttempt = await hashString(password);
+    if (user.password !== password && user.password !== hashedAttempt) {
       const e = new Error("Invalid credentials (local)");
       e.code = "INVALID_CREDENTIALS";
       throw e;
