@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import Input from '@/components/Form/Input';
 import DashboardLayout from '@/components/DashboardLayout';
 
 function calcMonthlyPayment(principal, annualRatePct, termMonths) {
@@ -70,36 +71,32 @@ export default function LoanCalculator({ role = 'borrower' }) {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 16, marginTop: 12 }}>
           <div className="card" style={{ padding: 16 }}>
             <div style={{ display: 'grid', gap: 10 }}>
-              <label>Loan amount (principal)</label>
-              <input type="number" value={principal} onChange={e => setPrincipal(Number(e.target.value || 0))} />
+              <Input label="Loan amount (principal)" type="number" value={principal} onChange={e => setPrincipal(Number(e.target.value || 0))} />
 
-              <label>Annual interest rate (%)</label>
-              <input type="number" step="0.01" value={annualRate} onChange={e => setAnnualRate(Number(e.target.value || 0))} />
+              <Input label="Annual interest rate (%)" type="number" step="0.01" value={annualRate} onChange={e => setAnnualRate(Number(e.target.value || 0))} />
 
-              <label>Term (years)</label>
-              <input type="number" step="0.5" value={termYears} onChange={e => setTermYears(Number(e.target.value || 0))} />
+              <Input label="Term (years)" type="number" step="0.5" value={termYears} onChange={e => setTermYears(Number(e.target.value || 0))} />
 
-              <label>Extra monthly payment (optional)</label>
-              <input type="number" value={extraMonthly} onChange={e => setExtraMonthly(Number(e.target.value || 0))} />
+              <Input label="Extra monthly payment (optional)" type="number" value={extraMonthly} onChange={e => setExtraMonthly(Number(e.target.value || 0))} />
 
               <hr />
 
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
                 <div>
                   <div className="muted">Monthly payment</div>
-                  <div style={{ fontSize: 20, fontWeight: 700 }}>₹ {formatCurrency(Math.round(monthlyPayment))}</div>
+                  <div style={{ fontSize: 20, fontWeight: 700 }}>{formatCurrency(Math.round(monthlyPayment))}</div>
                 </div>
                 <div>
                   <div className="muted">With extra</div>
-                  <div style={{ fontSize: 20, fontWeight: 700 }}>₹ {formatCurrency(Math.round(monthlyWithExtra))}</div>
+                  <div style={{ fontSize: 20, fontWeight: 700 }}>{formatCurrency(Math.round(monthlyWithExtra))}</div>
                 </div>
               </div>
 
               <div style={{ marginTop: 8 }}>
                 <div className="muted">Total payment (all months)</div>
-                <div>₹ {formatCurrency(Math.round(totalPayment))}</div>
+                <div>{formatCurrency(Math.round(totalPayment))}</div>
                 <div className="muted">Total interest paid</div>
-                <div>₹ {formatCurrency(Math.round(totalInterest))}</div>
+                <div>{formatCurrency(Math.round(totalInterest))}</div>
               </div>
             </div>
           </div>
@@ -110,7 +107,7 @@ export default function LoanCalculator({ role = 'borrower' }) {
               {projection.map(p => (
                 <div key={p.month} style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <div>Month {p.month}</div>
-                  <div>Bal: ₹ {formatCurrency(p.balance)}</div>
+                  <div>Bal: {formatCurrency(p.balance)}</div>
                 </div>
               ))}
             </div>
@@ -118,7 +115,7 @@ export default function LoanCalculator({ role = 'borrower' }) {
             <hr style={{ margin: '12px 0' }} />
             <h4>AI suggestion (simulated)</h4>
             <p className="muted">Small simulated suggestion showing effect of paying ~10% extra.</p>
-            <div>Suggested extra: ₹ {formatCurrency(aiPrediction.suggestedExtra)}</div>
+            <div>Suggested extra: {formatCurrency(aiPrediction.suggestedExtra)}</div>
             <div>Estimated payoff months (with suggestion): {aiPrediction.payoffMonths}</div>
           </aside>
         </div>

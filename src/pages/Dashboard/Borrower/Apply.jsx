@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import Input from '@/components/Form/Input';
+import CustomSelect from '@/components/CustomSelect';
 
 const DRAFT_KEY = 'fynvia_apply_draft_v1';
 
@@ -75,19 +77,17 @@ export default function Apply() {
         {error && <div className="auth-error">{error}</div>}
 
         <div className="form-grid">
-          <label>
-            <div className="label">Loan Amount (₹)</div>
-            <input placeholder="e.g., 50000" value={amount} onChange={(e)=>setAmount(e.target.value)} />
-          </label>
-          <label>
-            <div className="label">Loan Term (months)</div>
-            <select value={term} onChange={(e)=>setTerm(e.target.value)}>
-              <option value="">Select term</option>
-              <option value="12">12</option>
-              <option value="24">24</option>
-              <option value="36">36</option>
-            </select>
-          </label>
+          <Input placeholder="e.g., 50000" label="Loan Amount" value={amount} onChange={(e)=>setAmount(e.target.value)} />
+          <div>
+            <div className="form-field">
+              <label className="form-label">Loan Term (months)</label>
+              <CustomSelect
+                value={term}
+                onChange={(v)=>setTerm(v)}
+                options={[{ value: '', label: 'Select term' }, { value: '12', label: '12' }, { value: '24', label: '24' }, { value: '36', label: '36' }]}
+              />
+            </div>
+          </div>
         </div>
 
         <div style={{ marginTop: 12 }}>
@@ -99,41 +99,25 @@ export default function Apply() {
           </div>
         </div>
 
-        <label style={{ marginTop: 12 }}>
-          <div className="label">Loan Purpose</div>
-          <input value={purpose} onChange={(e)=>setPurpose(e.target.value)} placeholder={loanType==='education' ? 'Tuition, Course fee...' : 'e.g., consolidate debt'} />
-        </label>
+        <div style={{ marginTop: 12 }}>
+          <Input label="Loan Purpose" placeholder={loanType==='education' ? 'Tuition, Course fee...' : 'e.g., consolidate debt'} value={purpose} onChange={(e)=>setPurpose(e.target.value)} />
+        </div>
 
         {/* dynamic fields */}
         {loanType === 'business' && (
           <div className="form-grid">
-            <label>
-              <div className="label">Business type</div>
-              <input value={businessType} onChange={(e)=>setBusinessType(e.target.value)} placeholder="e.g., Retail, Services" />
-            </label>
-            <label>
-              <div className="label">Monthly revenue (₹)</div>
-              <input value={monthlyRevenue} onChange={(e)=>setMonthlyRevenue(e.target.value)} placeholder="e.g., 150000" />
-            </label>
+            <Input label="Business type" placeholder="e.g., Retail, Services" value={businessType} onChange={(e)=>setBusinessType(e.target.value)} />
+            <Input label="Monthly revenue" placeholder="e.g., 150000" value={monthlyRevenue} onChange={(e)=>setMonthlyRevenue(e.target.value)} />
           </div>
         )}
         {loanType === 'education' && (
           <div className="form-grid">
-            <label>
-              <div className="label">Course name</div>
-              <input value={courseName} onChange={(e)=>setCourseName(e.target.value)} placeholder="e.g., MSc Computer Science" />
-            </label>
-            <label>
-              <div className="label">Institution</div>
-              <input value={institution} onChange={(e)=>setInstitution(e.target.value)} placeholder="e.g., University" />
-            </label>
+            <Input label="Course name" placeholder="e.g., MSc Computer Science" value={courseName} onChange={(e)=>setCourseName(e.target.value)} />
+            <Input label="Institution" placeholder="e.g., University" value={institution} onChange={(e)=>setInstitution(e.target.value)} />
           </div>
         )}
         {loanType === 'education' && (
-          <label>
-            <div className="label">Duration (months)</div>
-            <input value={durationMonths} onChange={(e)=>setDurationMonths(e.target.value)} placeholder="e.g., 24" />
-          </label>
+          <Input label="Duration (months)" placeholder="e.g., 24" value={durationMonths} onChange={(e)=>setDurationMonths(e.target.value)} />
         )}
 
         <label>
@@ -165,8 +149,8 @@ export default function Apply() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div className="emi-preview" style={{ textAlign: 'right' }}>
               <div style={{ fontSize: '0.95rem', color: 'var(--muted)' }}>Estimated EMI</div>
-              <div style={{ fontWeight: 700, fontSize: '1.05rem' }}>₹{emi.toLocaleString()}</div>
-              <div style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>Total interest ₹{totalInterest.toLocaleString()}</div>
+              <div style={{ fontWeight: 700, fontSize: '1.05rem' }}>{emi.toLocaleString()}</div>
+              <div style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>{'Total interest ' + totalInterest.toLocaleString()}</div>
             </div>
             <button type="submit" className="btn btn-dark">Submit Application</button>
           </div>

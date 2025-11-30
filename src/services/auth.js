@@ -1,7 +1,7 @@
 const USERS_KEY = "fynvia_users_v1";
 const CURRENT_USER_KEY = "fynvia_current_user_v1";
 const RESETS_KEY = "fynvia_pw_resets_v1";
-const API_URL = "http://localhost:4000/api";
+const API_URL = "http://localhost:5000/api";
 
 // ---------------- Local helpers ----------------
 function loadUsers() {
@@ -30,17 +30,9 @@ export function setCurrentUser(user) {
 }
 
 // ---------------- Backend-powered signup/login ----------------
-export async function signupUser({
-  name,
-  email,
-  password,
-  role,
-  aadhar = null,
-  pan = null,
-}) {
-  // Try backend signup first; if network/backend unavailable, fall back to localStorage-based signup
+export async function signupUser({ name, email, password, role, aadhar = null, pan = null }) {
   try {
-    const res = await fetch(`${API_URL}/signup`, {
+    const res = await fetch(`${API_URL}/auth/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password, role, aadhar, pan }),
@@ -53,15 +45,15 @@ export async function signupUser({
       throw err;
     }
 
-    setCurrentUser(data);
-    return data;
+    // backend returns { message, user }
+    setCurrentUser(data.user);
+    return data.user;
   } catch (err) {
-    // Network or backend error: fallback to local storage auth for prototyping
-    // Check for existing email
+    // fallback to local storage auth if backend unavailable
     const users = loadUsers();
     if (users.find((u) => u.email.toLowerCase() === String(email).toLowerCase())) {
-      const e = new Error('Email already exists (local)');
-      e.code = 'EMAIL_EXISTS';
+      const e = new Error("Email already exists (local)");
+      e.code = "EMAIL_EXISTS";
       throw e;
     }
     const id = `local_${Date.now()}_${Math.floor(Math.random() * 9000 + 1000)}`;
@@ -73,12 +65,12 @@ export async function signupUser({
   }
 }
 
-export async function loginUser({ email, password }) {
+export async function loginUser({ email, password, role }) {
   try {
-    const res = await fetch(`${API_URL}/login`, {
+    const res = await fetch(`${API_URL}/auth/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, role }),
     });
 
     const data = await res.json();
@@ -88,15 +80,16 @@ export async function loginUser({ email, password }) {
       throw err;
     }
 
-    setCurrentUser(data);
-    return data;
+    setCurrentUser(data.user);
+    return data.user;
   } catch (err) {
-    // Fallback to local users for prototyping when backend is unavailable
     const users = loadUsers();
-    const user = users.find((u) => u.email.toLowerCase() === String(email).toLowerCase());
+    const user = users.find(
+      (u) => u.email.toLowerCase() === String(email).toLowerCase() && u.role === role
+    );
     if (!user || user.password !== password) {
-      const e = new Error('Invalid credentials (local)');
-      e.code = 'INVALID_CREDENTIALS';
+      const e = new Error("Invalid credentials (local)");
+      e.code = "INVALID_CREDENTIALS";
       throw e;
     }
     setCurrentUser(user);

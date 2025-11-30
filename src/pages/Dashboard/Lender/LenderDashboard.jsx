@@ -10,13 +10,13 @@ export default function LenderDashboard() {
   const kpis = [
     { id: 1, title: 'Loans Pending Approval', value: '12', sub: 'Awaiting review' },
     { id: 2, title: 'Active Loans', value: '87', sub: 'Currently managed' },
-  { id: 3, title: 'Total Disbursed', value: '₹2.3M', sub: 'All-time' },
+  { id: 3, title: 'Total Disbursed', value: '2.3M', sub: 'All-time' },
     { id: 4, title: 'Avg. Interest Rate', value: '11.2%', sub: 'Portfolio average' },
   ];
   const recent = [
-  { id: 'RQ-1021', borrower: 'John D.', amount: '₹12,000', status: 'Pending' },
-  { id: 'RQ-1020', borrower: 'Mia P.', amount: '₹5,500', status: 'Flagged' },
-  { id: 'RQ-1019', borrower: 'Ishaan K.', amount: '₹20,000', status: 'New' },
+  { id: 'RQ-1021', borrower: 'John D.', amount: '12,000', status: 'Pending' },
+  { id: 'RQ-1020', borrower: 'Mia P.', amount: '5,500', status: 'Flagged' },
+  { id: 'RQ-1019', borrower: 'Ishaan K.', amount: '20,000', status: 'New' },
   ];
 
   return (
@@ -43,7 +43,7 @@ export default function LenderDashboard() {
             <div key={k.id} className="kpi-card card">
                 <div className="kpi-top">
                   <div className="kpi-title">{k.title}</div>
-                  <div className="kpi-icon">₹</div>
+                  <div className="kpi-icon"></div>
                 </div>
               <div className="kpi-value">{k.value}</div>
               <div className="kpi-sub muted">{k.sub}</div>
@@ -57,7 +57,7 @@ export default function LenderDashboard() {
             <p className="muted">Summary of your lending activity</p>
             <div className="loan-row"><span>Loans Pending Approval:</span><strong>12</strong></div>
             <div className="loan-row"><span>Active Loans:</span><strong>87</strong></div>
-              <div className="loan-row"><span>Total Disbursed:</span><strong>₹2.3M</strong></div>
+              <div className="loan-row"><span>Total Disbursed:</span><strong>2.3M</strong></div>
             <div className="loan-row"><span>Avg. Interest Rate:</span><strong>11.2%</strong></div>
           </div>
 

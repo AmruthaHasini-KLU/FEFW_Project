@@ -40,7 +40,7 @@ export default function AdminReports() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
               <div className="kpi-card card"><div className="kpi-sub muted">Total Users</div><div className="kpi-value">{sampleSummary.totalUsers}</div></div>
               <div className="kpi-card card"><div className="kpi-sub muted">Total Loans</div><div className="kpi-value">{sampleSummary.totalLoans}</div></div>
-              <div className="kpi-card card"><div className="kpi-sub muted">Monthly Revenue</div><div className="kpi-value">₹{sampleSummary.monthlyRevenue.toLocaleString()}</div></div>
+              <div className="kpi-card card"><div className="kpi-sub muted">Monthly Revenue</div><div className="kpi-value">{sampleSummary.monthlyRevenue.toLocaleString()}</div></div>
             </div>
           </div>
         </section>

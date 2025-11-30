@@ -487,6 +487,13 @@ select::-ms-expand { display: none; }
 .pw-bar.medium { background: linear-gradient(90deg,#f59e0b,#f59e0b); }
 .pw-bar.strong { background: linear-gradient(90deg,#10b981,#10b981); }
 
+/* Shared form field styles (new components use these) */
+.form-field { margin-bottom: 12px; }
+.form-label { display:block; font-weight:700; margin-bottom:8px; }
+.form-input { width:100%; padding:12px 14px; border-radius:10px; border:1px solid var(--input-border); background:var(--surface); color:var(--text); box-sizing:border-box; }
+.field-error { color: var(--danger); background: var(--error-bg); border-radius:8px; padding:8px; margin-top:8px; font-size:0.95rem; }
+
+
 /* Loan type pills and EMI preview */
 .loan-type-pills { display:flex; gap:8px; margin-top:8px; }
 .pill { padding:8px 12px; border-radius:999px; border:1px solid var(--border); background:var(--panel); cursor:pointer; }

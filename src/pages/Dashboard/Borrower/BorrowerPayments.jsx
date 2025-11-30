@@ -3,8 +3,8 @@ import DashboardSidebar from '@/components/DashboardSidebar';
 
 export default function BorrowerPayments() {
   const [payments] = useState([
-    { id: 1, date: '2025-10-20', amount: '₹4,500', status: 'Due' },
-    { id: 2, date: '2025-09-20', amount: '₹4,500', status: 'Paid' },
+    { id: 1, date: '2025-10-20', amount: '4,500', status: 'Due' },
+    { id: 2, date: '2025-09-20', amount: '4,500', status: 'Paid' },
   ]);
 
   return (

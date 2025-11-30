@@ -29,8 +29,8 @@ export default function LenderBorrowers() {
             <tr><th>Borrower</th><th>Score</th><th>Active Loans</th><th>Outstanding</th></tr>
           </thead>
           <tbody>
-            <tr><td>John D.</td><td>710</td><td>1</td><td>₹4,200</td></tr>
-            <tr><td>Mia P.</td><td>680</td><td>2</td><td>₹11,500</td></tr>
+            <tr><td>John D.</td><td>710</td><td>1</td><td>4,200</td></tr>
+            <tr><td>Mia P.</td><td>680</td><td>2</td><td>11,500</td></tr>
           </tbody>
         </table>
       </section>

@@ -4,6 +4,8 @@ import { useAuth } from '@/context/AuthContext';
 import { Link } from 'react-router-dom';
 import AuthLayout from '@/components/AuthLayout';
 import CustomSelect from '@/components/CustomSelect';
+import Input from '@/components/Form/Input';
+import PasswordInput from '@/components/Form/PasswordInput';
 import { roleDashboardPath } from '@/utils/helpers';
 
 export default function Signup() {
@@ -74,57 +76,34 @@ export default function Signup() {
     <AuthLayout title="Create your account">
       {error && <div className="auth-error">{error}</div>}
       <form onSubmit={onSubmit}>
-        <input
+        <Input
           placeholder="Full name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          error={fieldErrors.name}
         />
-        {fieldErrors.name && <div className="auth-error" style={{ marginTop: 6 }}>{fieldErrors.name}</div>}
-        <input
+        <Input
           placeholder="Email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          error={fieldErrors.email}
         />
-        {fieldErrors.email && <div className="auth-error" style={{ marginTop: 6 }}>{fieldErrors.email}</div>}
-        <div className="input-with-toggle">
-          <input
-            placeholder="Password"
-            type={showPassword ? 'text' : 'password'}
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              if (fieldErrors.confirmPassword) setFieldErrors((s) => ({ ...s, confirmPassword: null }));
-            }}
-          />
-          <button type="button" className="input-toggle" onClick={() => setShowPassword((v) => !v)} aria-label="Toggle password visibility">{showPassword ? 'Hide' : 'Show'}</button>
-        </div>
-        {fieldErrors.password && <div className="auth-error" style={{ marginTop: 6 }}>{fieldErrors.password}</div>}
-        <div className="password-hint">
-          {/* Show only unmet rules while typing to avoid noise */}
-          <div className="pw-rules" aria-live="polite">
-            {password.length < 8 && <div className="bad">At least 8 characters</div>}
-            {!/[0-9]/.test(password) && password.length > 0 && <div className="bad">Contains a number</div>}
-            {!/[!@#$%^&*(),.?":{}|<>]/.test(password) && password.length > 0 && <div className="bad">Contains a symbol</div>}
-          </div>
-          <div className="pw-strength">
-            <div className={`pw-bar ${password.length >= 8 && /[0-9]/.test(password) && /[!@#$%^&*(),.?":{}|<>]/.test(password) ? (password.length>11? 'strong':'medium') : 'weak'}`}></div>
-            <small className="muted">Your password is encrypted and never shared.</small>
-          </div>
-        </div>
-        <div className="input-with-toggle">
-          <input
-            placeholder="Confirm password"
-            type={showConfirm ? 'text' : 'password'}
-            value={confirmPassword}
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
-              if (fieldErrors.confirmPassword) setFieldErrors((s) => ({ ...s, confirmPassword: null }));
-            }}
-          />
-          <button type="button" className="input-toggle" onClick={() => setShowConfirm((v) => !v)} aria-label="Toggle confirm password visibility">{showConfirm ? 'Hide' : 'Show'}</button>
-        </div>
-        {fieldErrors.confirmPassword && <div className="auth-error" style={{ marginTop: 6 }}>{fieldErrors.confirmPassword}</div>}
+        <PasswordInput
+          id="password"
+          label="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          error={fieldErrors.password}
+        />
+        <PasswordInput
+          id="confirmPassword"
+          label="Confirm password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          error={fieldErrors.confirmPassword}
+          showStrength={false}
+        />
         <CustomSelect
           value={role}
           onChange={(v) => setRole(v)}

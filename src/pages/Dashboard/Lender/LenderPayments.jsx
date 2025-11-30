@@ -29,8 +29,8 @@ export default function LenderPayments() {
             <tr><th>Date</th><th>Borrower</th><th>Amount</th><th>Status</th></tr>
           </thead>
           <tbody>
-            <tr><td>2025-10-20</td><td>John D.</td><td>₹450</td><td>Success</td></tr>
-            <tr><td>2025-10-19</td><td>Mia P.</td><td>₹650</td><td>Failed</td></tr>
+            <tr><td>2025-10-20</td><td>John D.</td><td>450</td><td>Success</td></tr>
+            <tr><td>2025-10-19</td><td>Mia P.</td><td>650</td><td>Failed</td></tr>
           </tbody>
         </table>
       </section>

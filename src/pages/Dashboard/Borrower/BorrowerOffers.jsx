@@ -19,25 +19,25 @@ export default function BorrowerOffers() {
             <ul style={{ marginTop: '1rem', lineHeight: 2 }}>
               <li>
                 <strong>12 months</strong> @ <strong>10.5%</strong> —
-                ₹5,000/month
+                5,000/month
                 <span className="muted"> (Best for short-term needs)</span>
               </li>
 
               <li>
                 <strong>18 months</strong> @ <strong>10.8%</strong> —
-                ₹3,600/month
+                3,600/month
                 <span className="muted"> (Balanced option)</span>
               </li>
 
               <li>
                 <strong>24 months</strong> @ <strong>11.0%</strong> —
-                ₹2,800/month
+                2,800/month
                 <span className="muted"> (Lower monthly EMI)</span>
               </li>
 
               <li>
                 <strong>36 months</strong> @ <strong>11.75%</strong> —
-                ₹2,050/month
+                2,050/month
                 <span className="muted"> (Long-term flexibility)</span>
               </li>
 

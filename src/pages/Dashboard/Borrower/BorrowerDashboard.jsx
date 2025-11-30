@@ -17,19 +17,19 @@ export default function BorrowerDashboard() {
 
   // Sample KPIs and loan data (replace with real data later)
   const kpis = [
-    { id: 1, title: 'Total Borrowed', value: '₹150K', sub: 'Current outstanding', trend: [5,6,7,6,8,7,9] },
+    { id: 1, title: 'Total Borrowed', value: '150K', sub: 'Current outstanding', trend: [5,6,7,6,8,7,9] },
     { id: 2, title: 'Active Loans', value: '2', sub: 'In good standing', trend: [2,2,3,2,2,1,2] },
-    { id: 3, title: 'Next Payment', value: '₹8,500', sub: 'Due in 3 days', trend: [4,5,3,4,5,4,6] },
+    { id: 3, title: 'Next Payment', value: '8,500', sub: 'Due in 3 days', trend: [4,5,3,4,5,4,6] },
     { id: 4, title: 'Credit Score', value: '750', sub: 'Excellent rating', trend: [6,6,7,7,8,7,8] },
   ];
 
-  const activeLoan = { amount: '₹50,000', balance: '₹35,000', rate: '12.5% p.a.', monthly: '₹4,500' };
+  const activeLoan = { amount: '50,000', balance: '35,000', rate: '12.5% p.a.', monthly: '4,500' };
 
   // Interactive state for demo purposes
   const [payments, setPayments] = useState([
-    { id: 1, date: '2025-10-20', amount: '₹4,500', status: 'Due' },
-    { id: 2, date: '2025-09-20', amount: '₹4,500', status: 'Paid' },
-    { id: 3, date: '2025-08-20', amount: '₹4,500', status: 'Paid' },
+    { id: 1, date: '2025-10-20', amount: '4,500', status: 'Due' },
+    { id: 2, date: '2025-09-20', amount: '4,500', status: 'Paid' },
+    { id: 3, date: '2025-08-20', amount: '4,500', status: 'Paid' },
   ]);
 
   const [documents, setDocuments] = useState([
@@ -48,9 +48,9 @@ export default function BorrowerDashboard() {
     const max = Math.max(...data);
     const range = max - min || 1;
     const step = width / (data.length - 1);
-    const points = data.map((d, i) => `₹{i * step},₹{height - ((d - min) / range) * height}`).join(' ');
+    const points = data.map((d, i) => `${i * step},${height - ((d - min) / range) * height}`).join(' ');
     return (
-      <svg width={width} height={height} viewBox={`0 0 ₹{width} ${height}`} preserveAspectRatio="none" className="sparkline">
+      <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" className="sparkline">
         <polyline points={points} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     );
@@ -138,7 +138,7 @@ export default function BorrowerDashboard() {
               <p className="muted">Active offers and required documents</p>
                 <div style={{ marginTop: 12 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div><strong>Available Offer:</strong> 12 months @ 10.5% (₹5,000)</div>
+                  <div><strong>Available Offer:</strong> 12 months @ 10.5% (5,000)</div>
                   <div>
                     <Link to="/dashboard/borrower/apply" className="btn btn-outline btn-sm" style={{ marginRight: 8 }}>Apply</Link>
                     <button className="btn btn-primary btn-sm">View Offers</button>
@@ -193,9 +193,9 @@ export default function BorrowerDashboard() {
                     <tr><th>Amount</th><th>Purpose</th><th>Applied Date</th><th>Interest Rate</th><th>Status</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td>₹50,000</td><td>Business Expansion</td><td>2024-02-01</td><td>12.5%</td><td><span className="status-badge approved">approved</span></td></tr>
-                    <tr><td>₹75,000</td><td>Equipment Purchase</td><td>2024-02-15</td><td>-</td><td><span className="status-badge pending">pending</span></td></tr>
-                    <tr><td>₹25,000</td><td>Working Capital</td><td>2024-01-20</td><td>-</td><td><span className="status-badge rejected">rejected</span></td></tr>
+                    <tr><td>50,000</td><td>Business Expansion</td><td>2024-02-01</td><td>12.5%</td><td><span className="status-badge approved">approved</span></td></tr>
+                    <tr><td>75,000</td><td>Equipment Purchase</td><td>2024-02-15</td><td>-</td><td><span className="status-badge pending">pending</span></td></tr>
+                    <tr><td>25,000</td><td>Working Capital</td><td>2024-01-20</td><td>-</td><td><span className="status-badge rejected">rejected</span></td></tr>
                   </tbody>
                 </table>
               </div>
@@ -209,7 +209,7 @@ export default function BorrowerDashboard() {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 180px', gap: '1rem', marginTop: 12 }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
                   <div style={{ textAlign: 'center' }}><div style={{ fontSize: 22, color: 'var(--accent)' }}>On-time Score</div><div className="muted">85%</div></div>
-                  <div style={{ textAlign: 'center' }}><div style={{ fontSize: 22, color: 'var(--green)' }}>Eligible Offer</div><div className="muted">₹10K</div></div>
+                  <div style={{ textAlign: 'center' }}><div style={{ fontSize: 22, color: 'var(--green)' }}>Eligible Offer</div><div className="muted">10K</div></div>
                   <div style={{ textAlign: 'center' }}><div style={{ fontSize: 22, color: 'var(--orange)' }}>Risk Flag</div><div className="muted">Low</div></div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

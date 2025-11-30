@@ -60,8 +60,8 @@ export default function LenderOffers() {
             <tr><th>Offer ID</th><th>Term</th><th>Rate</th><th>Amount</th></tr>
           </thead>
           <tbody>
-            <tr><td>OF-1001</td><td>12 months</td><td>10.5%</td><td>₹5,000</td></tr>
-            <tr><td>OF-1002</td><td>24 months</td><td>11.0%</td><td>₹12,000</td></tr>
+            <tr><td>OF-1001</td><td>12 months</td><td>10.5%</td><td>5,000</td></tr>
+            <tr><td>OF-1002</td><td>24 months</td><td>11.0%</td><td>12,000</td></tr>
           </tbody>
           </table>
         </section>
