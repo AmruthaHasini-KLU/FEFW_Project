@@ -1,11 +1,12 @@
 import React from "react";
 import DashboardSidebar from "@/components/DashboardSidebar";
+import formatCurrency from "@/utils/formatCurrency";
 
 export default function AnalystDashboard() {
   const portfolioData = [
-    { segment: "Personal Loans", volume: "$1.2M", risk: "Low", roi: "6.5%" },
-    { segment: "Business Loans", volume: "$3.5M", risk: "Medium", roi: "7.2%" },
-    { segment: "Micro Loans", volume: "$580K", risk: "High", roi: "5.8%" }
+    { segment: "Personal Loans", volume: 1200000, risk: "Low", roi: "6.5%" },
+    { segment: "Business Loans", volume: 3500000, risk: "Medium", roi: "7.2%" },
+    { segment: "Micro Loans", volume: 580000, risk: "High", roi: "5.8%" }
   ];
 
   const chartData = [
@@ -19,175 +20,40 @@ export default function AnalystDashboard() {
   return (
     <div className="app-root">
       <style>{`
-        /* ================= RESET & STABILITY ================= */
-        html, body {
-          margin: 0;
-          padding: 0;
-          overflow-x: hidden;
-          overflow-y: scroll;
-          background: #f8fafc;
-        }
+        /* Use CSS variables so dark mode follows app theme */
+        html, body { margin: 0; padding: 0; overflow-x: hidden; overflow-y: scroll; }
+        * { box-sizing: border-box; font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif; }
 
-        * {
-          box-sizing: border-box;
-          font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-        }
+        .app-root { min-height: 100vh; color: var(--text); background: var(--bg); }
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; min-width: 260px; max-width: 260px; }
+        main { flex: 1; padding: 28px 36px; }
 
-        /* ================= LAYOUT ================= */
-        .app-root {
-          min-height: 100vh;
-          color: #0f172a;
-        }
+        .page-title { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+        .page-subtitle { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
 
-        .layout {
-          display: flex;
-          min-height: 100vh;
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-bottom: 28px; }
+        .stat-card { background: var(--panel); border-radius: 14px; padding: 22px; border: 1px solid var(--border); transition: box-shadow 0.2s ease; }
+        .stat-card:hover { box-shadow: var(--shadow); }
+        .stat-label { font-size: 13px; color: var(--muted); }
+        .stat-value { font-size: 30px; font-weight: 600; margin-top: 8px; }
 
-        .sidebar {
-          width: 260px;
-          min-width: 260px;
-          max-width: 260px;
-        }
+        .card { background: var(--panel); border-radius: 14px; padding: 22px; border: 1px solid var(--border); margin-bottom: 28px; }
+        .card-title { font-size: 15px; font-weight: 600; margin-bottom: 14px; color: var(--text); }
+        .chart { display: flex; align-items: flex-end; height: 220px; gap: 16px; padding-top: 10px; }
+        .bar-block { flex: 1; text-align: center; }
+        .bar { width: 100%; background: linear-gradient(180deg, var(--accent), var(--accent-600)); border-radius: 8px 8px 0 0; }
+        .month { margin-top: 6px; font-size: 12px; color: var(--muted); }
 
-        main {
-          flex: 1;
-          padding: 28px 36px;
-        }
+        table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+        th { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; padding: 14px; border-bottom: 1px solid var(--border); }
+        td { padding: 16px 14px; font-size: 14px; border-bottom: 1px solid var(--border); color: var(--text); }
+        tbody tr:hover { background: var(--surface); }
 
-        /* ================= HEADER ================= */
-        .page-title {
-          font-size: 28px;
-          font-weight: 600;
-          margin-bottom: 6px;
-        }
-
-        .page-subtitle {
-          color: #64748b;
-          font-size: 14px;
-          margin-bottom: 28px;
-        }
-
-        /* ================= STATS ================= */
-        .stats-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-          gap: 18px;
-          margin-bottom: 28px;
-        }
-
-        .stat-card {
-          background: #ffffff;
-          border-radius: 14px;
-          padding: 22px;
-          border: 1px solid #e5e7eb;
-          transition: box-shadow 0.2s ease;
-        }
-
-        .stat-card:hover {
-          box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
-        }
-
-        .stat-label {
-          font-size: 13px;
-          color: #64748b;
-        }
-
-        .stat-value {
-          font-size: 30px;
-          font-weight: 600;
-          margin-top: 8px;
-        }
-
-        /* ================= CHART ================= */
-        .card {
-          background: #ffffff;
-          border-radius: 14px;
-          padding: 22px;
-          border: 1px solid #e5e7eb;
-          margin-bottom: 28px;
-        }
-
-        .card-title {
-          font-size: 15px;
-          font-weight: 600;
-          margin-bottom: 14px;
-        }
-
-        .chart {
-          display: flex;
-          align-items: flex-end;
-          height: 220px;
-          gap: 16px;
-          padding-top: 10px;
-        }
-
-        .bar-block {
-          flex: 1;
-          text-align: center;
-        }
-
-        .bar {
-          width: 100%;
-          background: linear-gradient(180deg, #2563eb, #1e40af);
-          border-radius: 8px 8px 0 0;
-        }
-
-        .month {
-          margin-top: 6px;
-          font-size: 12px;
-          color: #64748b;
-        }
-
-        /* ================= TABLE ================= */
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          margin-top: 14px;
-        }
-
-        th {
-          font-size: 12px;
-          color: #64748b;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          padding: 14px;
-          border-bottom: 1px solid #e5e7eb;
-        }
-
-        td {
-          padding: 16px 14px;
-          font-size: 14px;
-          border-bottom: 1px solid #f1f5f9;
-        }
-
-        tbody tr:hover {
-          background: #f8fafc;
-        }
-
-        /* ================= BADGES ================= */
-        .badge {
-          padding: 6px 14px;
-          font-size: 12px;
-          border-radius: 999px;
-          font-weight: 600;
-          display: inline-block;
-        }
-
-        .low {
-          background: #ecfeff;
-          color: #0f766e;
-        }
-
-        .medium {
-          background: #fff7ed;
-          color: #9a3412;
-        }
-
-        .high {
-          background: #fef2f2;
-          color: #991b1b;
-        }
+        .badge { padding: 6px 14px; font-size: 12px; border-radius: 999px; font-weight: 600; display: inline-block; }
+        .low { background: rgba(16,185,129,0.08); color: #065f46; }
+        .medium { background: rgba(249,115,22,0.08); color: #7c2d12; }
+        .high { background: rgba(239,68,68,0.08); color: #7f1d1d; }
       `}</style>
 
       <div className="layout">
@@ -211,7 +77,7 @@ export default function AnalystDashboard() {
             </div>
             <div className="stat-card">
               <div className="stat-label">Total Loan Volume</div>
-              <div className="stat-value">$5.28M</div>
+              <div className="stat-value">{formatCurrency(5280000)}</div>
             </div>
             <div className="stat-card">
               <div className="stat-label">Risk Exposure</div>
@@ -251,7 +117,7 @@ export default function AnalystDashboard() {
                 {portfolioData.map((row, i) => (
                   <tr key={i}>
                     <td>{row.segment}</td>
-                    <td>{row.volume}</td>
+                    <td>{formatCurrency(row.volume)}</td>
                     <td>
                       <span className={`badge ${row.risk.toLowerCase()}`}>
                         {row.risk}

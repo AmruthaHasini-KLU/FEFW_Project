@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import DashboardLayout from '@/components/DashboardLayout';
+import { useSettings } from '@/context/SettingsContext';
 
 export default function AnalystDataAnalysisPro() {
-  const [dark, setDark] = useState(false);
+  const { theme, toggleTheme } = useSettings();
 
   useEffect(() => {
-    document.body.style.background = dark ? '#0f172a' : '#ffffff';
-    document.body.style.margin = 0;
-    document.body.style.overflowX = 'hidden';
-  }, [dark]);
+    // ensure layout spacing and overflow are consistent
+    try {
+      document.body.style.margin = 0;
+      document.body.style.overflowX = 'hidden';
+    } catch (e) {}
+  }, []);
 
   const seasonalData = [
     { label: 'Jan', value: 40 },
@@ -20,28 +23,28 @@ export default function AnalystDataAnalysisPro() {
 
   return (
     <DashboardLayout role="analyst">
-      <div style={{ ...styles.page, ...(dark && styles.darkPage) }}>
+      <div style={{ ...styles.page }}>
         {/* Header */}
         <div style={styles.topBar}>
           <div>
             <h1 style={styles.title}>Advanced Data Analysis</h1>
-            <p style={styles.subtitle}>
-              Deep dive into loan performance and customer behavior
-            </p>
+              <p style={styles.subtitle}>
+                Deep dive into loan performance and customer behavior
+              </p>
           </div>
 
           <button
-            onClick={() => setDark(!dark)}
-            style={{ ...styles.toggle, ...(dark && styles.toggleDark) }}
+            onClick={() => toggleTheme()}
+            style={styles.toggle}
           >
-            {dark ? '☀ Light Mode' : '🌙 Dark Mode'}
+            {theme === 'dark' ? '☀ Light Mode' : '🌙 Dark Mode'}
           </button>
         </div>
 
         {/* Top Grid */}
         <div style={styles.grid}>
           {/* Customer Segmentation */}
-          <div style={{ ...styles.card, ...(dark && styles.darkCard) }}>
+          <div style={styles.card}>
             <h3 style={styles.cardTitle}>Customer Segmentation</h3>
             <p style={styles.muted}>
               Analysis by customer demographics and behavior
@@ -70,7 +73,7 @@ export default function AnalystDataAnalysisPro() {
           </div>
 
           {/* Seasonal Trends FIXED */}
-          <div style={{ ...styles.card, ...(dark && styles.darkCard) }}>
+          <div style={styles.card}>
             <h3 style={styles.cardTitle}>Seasonal Trends</h3>
             <p style={styles.muted}>Loan demand patterns throughout the year</p>
 
@@ -91,13 +94,7 @@ export default function AnalystDataAnalysisPro() {
         </div>
 
         {/* Predictive Analytics */}
-        <div
-          style={{
-            ...styles.card,
-            ...(dark && styles.darkCard),
-            marginTop: 24,
-          }}
-        >
+        <div style={{ ...styles.card, marginTop: 24 }}>
           <h3 style={styles.cardTitle}>Predictive Analytics</h3>
           <p style={styles.muted}>ML-powered insights and forecasting</p>
 
@@ -140,12 +137,9 @@ const styles = {
   page: {
     padding: 24,
     minHeight: '100vh',
-    color: '#111827',
+    color: 'var(--text)',
+    background: 'var(--bg)',
     boxSizing: 'border-box',
-  },
-
-  darkPage: {
-    color: '#e5e7eb',
   },
 
   topBar: {
@@ -164,23 +158,18 @@ const styles = {
 
   subtitle: {
     fontSize: 14,
-    color: '#6b7280',
+    color: 'var(--muted)',
     marginTop: 4,
   },
 
   toggle: {
     padding: '8px 14px',
     borderRadius: 8,
-    background: '#fff',
-    border: '1px solid #ddd',
+    background: 'var(--panel)',
+    border: '1px solid var(--border)',
+    color: 'var(--text)',
     cursor: 'pointer',
     fontSize: 14,
-  },
-
-  toggleDark: {
-    background: '#020617',
-    color: '#fff',
-    border: '1px solid #334155',
   },
 
   grid: {
@@ -191,27 +180,23 @@ const styles = {
   },
 
   card: {
-    background: '#ffffff',
+    background: 'var(--panel)',
     borderRadius: 14,
     padding: 20,
-    border: '1px solid #e5e7eb',
-    boxShadow: '0 10px 24px rgba(0,0,0,0.05)',
-  },
-
-  darkCard: {
-    background: '#020617',
-    border: '1px solid #1e293b',
+    border: '1px solid var(--border)',
+    boxShadow: 'var(--shadow)',
   },
 
   cardTitle: {
     fontSize: 18,
     fontWeight: 600,
     marginBottom: 6,
+    color: 'var(--text)',
   },
 
   muted: {
     fontSize: 13,
-    color: '#9ca3af',
+    color: 'var(--muted)',
   },
 
   progressRow: {
@@ -226,13 +211,13 @@ const styles = {
   progressTrack: {
     height: 8,
     borderRadius: 20,
-    background: '#e5e7eb',
+    background: 'var(--surface)',
     overflow: 'hidden',
   },
 
   progressFill: {
     height: '100%',
-    background: '#111827',
+    background: 'var(--accent-600)',
     borderRadius: 20,
     transition: 'width 1s ease',
   },
@@ -244,7 +229,7 @@ const styles = {
     gap: 16,
     marginTop: 28,
     paddingBottom: 6,
-    borderBottom: '1px solid #e5e7eb',
+    borderBottom: '1px solid var(--border)',
   },
 
   barWrapper: {
@@ -254,7 +239,7 @@ const styles = {
 
   chartBar: {
     width: '100%',
-    background: '#6366f1',
+    background: 'var(--accent)',
     borderRadius: 6,
     transition: 'height 0.6s ease',
   },
@@ -263,7 +248,7 @@ const styles = {
     fontSize: 12,
     marginTop: 6,
     display: 'inline-block',
-    color: '#6b7280',
+    color: 'var(--muted)',
   },
 
   statsGrid: {
@@ -285,7 +270,7 @@ const styles = {
   footer: {
     textAlign: 'center',
     fontSize: 13,
-    color: '#9ca3af',
+    color: 'var(--muted)',
     marginTop: 40,
     paddingBottom: 16,
   },

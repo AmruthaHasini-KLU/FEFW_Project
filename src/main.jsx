@@ -7,6 +7,17 @@ import { AuthProvider } from './context/AuthContext'
 import { SettingsProvider } from './context/SettingsContext'
 // scrollReveal is loaded dynamically below after initial paint
 
+// Apply persisted theme (if any) before React mounts so initial paint matches preference
+try {
+  const raw = localStorage.getItem('fynvia_settings_v1');
+  if (raw) {
+    const parsed = JSON.parse(raw);
+    if (parsed && parsed.theme) {
+      try { document.documentElement.dataset.theme = parsed.theme; } catch (e) {}
+    }
+  }
+} catch (e) {}
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>

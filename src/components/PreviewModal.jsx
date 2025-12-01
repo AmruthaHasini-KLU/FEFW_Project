@@ -19,7 +19,7 @@ export default function PreviewModal({ open, onClose, title, src, isBlob }) {
             <button className="btn btn-outline btn-sm" onClick={onClose}>Close</button>
           </div>
         </div>
-        <div style={{ height: '80vh', background: '#fff' }}>
+        <div style={{ height: '80vh', background: 'var(--panel)' }}>
           {/* Use iframe for data: URLs and object URLs. */}
           <iframe title={title} src={src} style={{ width: '100%', height: '100%', border: 0 }} />
         </div>

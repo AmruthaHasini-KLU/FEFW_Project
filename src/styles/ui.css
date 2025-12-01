@@ -135,6 +135,40 @@
   --error-text: #ffd7d7;
 }
 
+/* Strong overrides for dark mode to catch inline/light backgrounds
+   Use !important for high-specificity cases where components set
+   inline styles (e.g. style={{ background: '#fff' }}) so dark theme
+   reliably applies across the app. Keep these scoped to dark theme. */
+[data-theme="dark"] body {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+[data-theme="dark"] .card,
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .panel,
+[data-theme="dark"] .modal-card,
+[data-theme="dark"] .common-sidebar,
+[data-theme="dark"] .dashboard .dashboard-sidebar,
+[data-theme="dark"] .doc-box,
+[data-theme="dark"] .card-link,
+[data-theme="dark"] .testimonial-card,
+[data-theme="dark"] .auth-card {
+  background: var(--panel) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+[data-theme="dark"] .modal-backdrop {
+  background: rgba(0,0,0,0.6) !important;
+}
+
+[data-theme="dark"] tbody tr:hover,
+[data-theme="dark"] .card:hover {
+  background: rgba(255,255,255,0.02) !important;
+}
+
 body { background: var(--bg); color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
 /* Smooth scroll for anchor links */
 html { scroll-behavior: smooth; }
@@ -567,8 +601,8 @@ select::-ms-expand { display: none; }
 
 /* Progress rows used in analyst pages */
 .progress-row { display:flex; align-items:center; gap:12px; }
-.progress-row .progress { flex:1; height:12px; background: #e9e9ed; border-radius: 8px; position: relative; }
-.progress-row .bar { height:100%; background: var(--text); border-radius:8px; }
+.progress-row .progress { flex:1; height:12px; background: var(--surface); border-radius: 8px; position: relative; }
+.progress-row .bar { height:100%; background: var(--accent-600); border-radius:8px; }
 .progress-label { min-width:140px; text-align:right; color:var(--muted); }
 
 /* Borrower loan progress */
