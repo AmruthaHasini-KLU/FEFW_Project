@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import AuthLayout from '@/components/AuthLayout';
 import { roleDashboardPath } from '@/utils/helpers';
 import { requestReset, verifyReset, setPassword } from '@/services/auth';
+import Captcha from '@/components/Captcha';
 
 export default function Login() {
   const { login } = useAuth();
@@ -18,12 +19,17 @@ export default function Login() {
   const [pin, setPin] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [resetStep, setResetStep] = useState(0); // 0 = request, 1 = verify
+  const [captchaValid, setCaptchaValid] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setError('');
     if (!email || !password) {
       setError('Please fill in both fields.');
+      return;
+    }
+    if (!captchaValid) {
+      setError('Please solve the captcha before logging in.');
       return;
     }
     try {
@@ -55,6 +61,7 @@ export default function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <Captcha onChange={setCaptchaValid} />
         <button type="submit" disabled={loading}>{loading ? 'Logging in…' : 'Login'}</button>
         <div style={{ marginTop: 8 }}>
           <button type="button" className="link-btn" onClick={() => setShowReset(true)}>Forgot password?</button>
